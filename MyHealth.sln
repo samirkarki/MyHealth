@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Web", "MyHealth.Web\MyHealth.Web.csproj", "{9EE5FD88-8935-4839-BFE4-8D3C88A06F53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth1.Web", "MyHealth1.Web\MyHealth1.Web.csproj", "{9EE5FD88-8935-4839-BFE4-8D3C88A06F53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
