@@ -2,7 +2,7 @@ import React, { Component, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-const PrivateRoutes = ({ component: Component, auth, ...rest }) => {
+const PrivateRoutes = ({ component: Component, ...rest }) => {
     const dispatch = useDispatch()
     const auth = useSelector(state => state.authReducer);
 
