@@ -1,0 +1,5 @@
+--backup command
+mongodump -d MyHealthDb -o <directory_backup>
+
+-- restore command
+mongorestore -d MyHealthDb <directory_backup>
