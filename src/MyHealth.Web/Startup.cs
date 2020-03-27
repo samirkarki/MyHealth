@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using MyHealth.Web.DbSettings;
+using MyHealth.Web.Models;
+using MyHealth.Web.Services;
 
 namespace MyHealth.Web
 {
@@ -21,7 +25,14 @@ namespace MyHealth.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<MyHealthDbSettings>(
+                Configuration.GetSection(nameof(MyHealthDbSettings)));
+
+            services.AddSingleton<IMyHealthDbSettings>(sp =>
+                sp.GetRequiredService<IOptions<MyHealthDbSettings>>().Value);
+        
             services.AddControllersWithViews();
+            services.AddSingleton(typeof(CrudService<>));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
