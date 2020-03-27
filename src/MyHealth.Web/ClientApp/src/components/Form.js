@@ -3,6 +3,7 @@ import { connect, useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getLeads, deleteLead, addLead } from '../store/actions/leadsAction';
 import Checkbox from './checkbox/Checkbox';
+import RadioButton from './radio/RadioButton';
 
 const Form = () => {
 
@@ -59,14 +60,25 @@ const Form = () => {
             </div>
 
             <div className="form-group">
-            <label>
+                <label>
                     <Checkbox
                         checked={checked}
-                        onChange={(e)=>{console.log(e.target); setChecked(e.target.checked)}}
+                        onChange={(e) => { console.log(e.target); setChecked(e.target.checked) }}
                     />
                     <span style={{ marginLeft: 8 }}>Label Text</span>
                 </label>
             </div>
+
+            <div className="form-group">
+                <label>
+                    <div>
+                        <RadioButton name="test" value="1" onChange={(e)=> {console.log(e.target.value)}}>RadioBtn #1</RadioButton>
+                        <RadioButton name="test" value="2" onChange={(e)=> {console.log(e.target.value)}}>RadioBtn #2</RadioButton>
+                        <RadioButton name="test">RadioBtn #3</RadioButton>
+                    </div>
+                </label>
+            </div>
+
 
             <button type="button" onClick={handleSubmit} className="btn btn-primary">Save</button>
         </div>

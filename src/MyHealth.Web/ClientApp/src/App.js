@@ -12,6 +12,9 @@ import Register from './pages/account/Register';
 import Login from './pages/account/Login';
 import PrivateRoutes from './components/common/PrivateRoute';
 import Dashboard from './pages/admin/dashboard';
+import Diseases from './pages/admin/diseases';
+import CatsForm from './pages/admin/form';
+import AdminManagement from './pages/admin/management';
 
 class App extends Component {
 
@@ -30,7 +33,11 @@ class App extends Component {
                                 <Route exact path="/" component={Home} />
                                 <Route exact path="/register" component={Register} />
                                 <Route exact path="/login" component={Login} />
-                                <PrivateRoutes exact path="/admin/dashboard" component={Dashboard} />   
+                                {/* <PrivateRoutes exact path="/admin/dashboard" component={Dashboard} />    */}
+                                <Route exact path="/admin/dashboard" component={Dashboard} />   
+                                <Route exact path="/admin/diseases" component={Diseases} />   
+                                <Route exact path="/admin/catform" component={CatsForm} />   
+                                <Route exact path="/admin/management" component={AdminManagement} />
                             </div>
                         </div>
                     </Fragment>
