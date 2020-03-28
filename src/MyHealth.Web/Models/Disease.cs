@@ -7,7 +7,7 @@ namespace MyHealth.Web.Models
     {
 
         [BsonElement("Name")]
-        public string BookName { get; set; }
+        public string Name { get; set; }
         
     }
 }

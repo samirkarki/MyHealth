@@ -12,6 +12,7 @@ namespace MyHealth.Web.Models
         public string ContactNumber { get; set; }
         public string Password { get; set; }
         public string Token { get; set; }
-        public bool IsActive {get; set;}
+        public string Role {get; set;}
+        public bool IsDeleted {get; set;}
     }
 }

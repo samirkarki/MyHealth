@@ -45,7 +45,7 @@ namespace MyHealth.Web.Services
         {
             List<UserInfo> _users = new List<UserInfo>
             {
-                new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com" }
+                new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com", Role = Role.Admin }
             };
 
             // if email and password given
@@ -64,20 +64,7 @@ namespace MyHealth.Web.Services
                 return null;
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
-
+            var user_info_token = this.generateUserToken(user);
             // return basic user info (without password) and token to store client side
             return user.WithoutPassword();
         }
@@ -86,7 +73,7 @@ namespace MyHealth.Web.Services
         {
             List<UserInfo> _users = new List<UserInfo>
             {
-                new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com" }
+                new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com", Role = Role.Admin }
             };
 
             // if email and password given
@@ -105,13 +92,24 @@ namespace MyHealth.Web.Services
                 return null;
             }
 
+            var user_info_token = this.generateUserToken(user);
+
+            // return basic user info (without password) and token to store client side
+            return user_info_token.WithoutPassword();
+        }
+
+        protected UserInfo generateUserToken(UserInfo user)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.Name, user.Id.ToString()) 
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -119,8 +117,7 @@ namespace MyHealth.Web.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
 
-            // return basic user info (without password) and token to store client side
-            return user.WithoutPassword();
+            return user;
         }
 
         public void Create(UserInfo model)
