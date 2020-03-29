@@ -12,23 +12,22 @@ using MyHealth.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using MyHealth.Web.Services;
 
-namespace WebApi.Controllers
+namespace MyHealth.Web.Controllers
 {
-    [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : MyHealthController
     {
        private readonly IUserService _userService;
+        private readonly CrudService<UserInfo> _userCrudService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, CrudService<UserInfo> userCrudService)
         {
             _userService = userService;
+            _userCrudService = userCrudService;
         }
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("authenticate")]
+        [Route("~/api/Authenticate")]
         public IActionResult Authenticate(UserDTO model)
         {
        
@@ -37,6 +36,39 @@ namespace WebApi.Controllers
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
+            return Ok(user);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult Post(UserInfo user)
+        {
+       
+            var createdUser = _userService.Create(user);
+
+            if (user == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(user);
+        }
+
+        [HttpGet]
+        public IEnumerable<UserInfo> Get(string filter)
+        {
+            return _userCrudService.Query(filter);
+        }
+ 
+
+        [HttpPut]
+        [Route("{userId}/admin")]
+        public IActionResult Admin(string userId)
+        {
+       
+            var user = _userCrudService.Get(userId);
+            if (user == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+            user.IsAdmin=true;
+            _userCrudService.Update(user.Id, user);
             return Ok(user);
         }
        

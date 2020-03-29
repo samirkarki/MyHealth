@@ -17,7 +17,7 @@ namespace MyHealth.Web.Services
     public interface IUserService
     {
         UserInfo Authenticate(string email, string password = null);
-        void Create(UserInfo user);
+        UserInfo Create(UserInfo user);
     }
 
 
@@ -45,7 +45,7 @@ namespace MyHealth.Web.Services
         {
             List<UserInfo> _users = new List<UserInfo>
             {
-                new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com", Role = Role.Admin }
+                new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com", IsAdmin = false }
             };
 
             var user = _userCrudService.Query(u=>u.Email==email).FirstOrDefault();
@@ -76,9 +76,9 @@ namespace MyHealth.Web.Services
             }
         }
 
-        public void Create(UserInfo user)
+        public UserInfo Create(UserInfo user)
         {
-            _userCrudService.Create(UserWithEncryptedPassword(user,user.Password));
+            return _userCrudService.Create(UserWithEncryptedPassword(user,user.Password));
         }
 
         private UserInfo GenerateUserToken(UserInfo user)

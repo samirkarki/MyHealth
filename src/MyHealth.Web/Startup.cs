@@ -14,6 +14,7 @@ using MyHealth.Web.DbSettings;
 using MyHealth.Web.Helpers;
 using MyHealth.Web.Models;
 using MyHealth.Web.Services;
+using Microsoft.OpenApi.Models;
 
 namespace MyHealth.Web
 {
@@ -75,6 +76,11 @@ namespace MyHealth.Web
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyHealth API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,6 +100,15 @@ namespace MyHealth.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+             app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 
