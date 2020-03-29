@@ -52,6 +52,7 @@ namespace MyHealth.Web.Controllers
             return Ok(user);
         }
 
+        [HttpGet]
         public IEnumerable<UserInfo> Get(string filter)
         {
             return _userCrudService.Query(filter);
@@ -59,13 +60,14 @@ namespace MyHealth.Web.Controllers
  
 
         [HttpPut]
-        public IActionResult Role(string userId, string role)
+        [Route("{userId}/admin")]
+        public IActionResult Admin(string userId)
         {
        
             var user = _userCrudService.Get(userId);
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
-            user.Role=role;
+            user.IsAdmin=true;
             _userCrudService.Update(user.Id, user);
             return Ok(user);
         }

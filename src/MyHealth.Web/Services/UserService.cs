@@ -45,7 +45,7 @@ namespace MyHealth.Web.Services
         {
             List<UserInfo> _users = new List<UserInfo>
             {
-                new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com", Role = Role.Admin }
+                new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com", IsAdmin = false }
             };
 
             var user = _userCrudService.Query(u=>u.Email==email).FirstOrDefault();
