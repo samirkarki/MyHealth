@@ -54,12 +54,12 @@ namespace MyHealth.Web.Services
             {
                 return null;
             }
+           
             return this.GenerateUserToken(user.WithoutPassword());
         }
 
         public UserInfo SocialAuthenticate(UserInfo userIn)
         {
-
             var user = _userCrudService.Query(u => u.UserName == userIn.UserName).FirstOrDefault();
             if (user == null)
             {

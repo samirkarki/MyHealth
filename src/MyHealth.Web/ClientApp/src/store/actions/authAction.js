@@ -33,6 +33,7 @@ export const login = (userInfo) => dispatch => {
 
     axios.post('/api/socialauthentication', body, config)
         .then(res => {
+            console.log(res.data)
             dispatch({ type: LOGIN_SUCCESS, payload: res.data })
         })
         .catch(err => {

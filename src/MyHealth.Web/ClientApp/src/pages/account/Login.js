@@ -4,6 +4,7 @@ import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { login } from '../../store/actions/authAction';
+import { GoogleClientId, FacebookAppId } from '../../utils/keys';
 
 const Login = () => {
 
@@ -15,8 +16,8 @@ const Login = () => {
     const auth = useSelector(state => state.authReducer);
 
 
-    const clientId = "749061088249-339fn2hlbc4tbg6e849oljsk52q3ou22.apps.googleusercontent.com";
-    const fbAppId = "211665063234659";
+    // const clientId = "749061088249-339fn2hlbc4tbg6e849oljsk52q3ou22.apps.googleusercontent.com";
+    // const fbAppId = "211665063234659";
 
     const responseGoogle = (response) => {
         console.log(response.profileObj)
@@ -79,7 +80,7 @@ const Login = () => {
                         <div className="card-body text-center">
                             <div>
                                 <GoogleLogin
-                                    clientId={clientId}
+                                    clientId={GoogleClientId}
                                     render={renderProps => (
                                         <button className="btn btn-secondary" onClick={renderProps.onClick} disabled={renderProps.disabled}><span><i className="fa fa-google"></i></span>Sign in with Google</button>
                                     )}
@@ -91,7 +92,7 @@ const Login = () => {
                             </div>
                             <div style={{ marginTop: '15px' }}>
                                 <FacebookLogin
-                                    appId={fbAppId}
+                                    appId={FacebookAppId}
                                     fields="name,email,picture,first_name,last_name"
                                     callback={responseFacebook}
                                     render={renderProps => (

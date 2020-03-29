@@ -16,7 +16,7 @@ namespace MyHealth.Web.Controllers
 {
     public class UsersController : MyHealthController
     {
-       private readonly IUserService _userService;
+        private readonly IUserService _userService;
         private readonly CrudService<UserInfo> _userCrudService;
 
         public UsersController(IUserService userService, CrudService<UserInfo> userCrudService)
@@ -31,7 +31,7 @@ namespace MyHealth.Web.Controllers
         [Route("~/api/Authentication")]
         public IActionResult Authentication(string username, string password)
         {
-       
+
             var user = _userService.Authenticate(username, password);
 
             if (user == null)
@@ -45,20 +45,27 @@ namespace MyHealth.Web.Controllers
         [Route("~/api/SocialAuthentication")]
         public IActionResult SocialAuthentication(UserInfo model)
         {
-       
+
             var user = _userService.SocialAuthenticate(model);
 
             if (user == null)
                 return BadRequest(new { message = "User cannot be authenticated." });
 
-            return Ok(user);
+            UserDTO userInfo = new UserDTO();
+            userInfo.Email = user.Email;
+            userInfo.FirstName = user.FirstName;
+            userInfo.LastName = user.LastName;
+            userInfo.UserName = user.UserName;
+            userInfo.UserId = user.Id;
+            userInfo.Token = user.Token;
+            return Ok(userInfo);
         }
 
         [AllowAnonymous]
         [HttpPost]
         public IActionResult Post(UserInfo user)
         {
-       
+
             var createdUser = _userService.Create(user);
 
             if (user == null)
@@ -72,22 +79,22 @@ namespace MyHealth.Web.Controllers
         {
             return _userCrudService.Query(filter);
         }
- 
+
 
         [HttpPut]
         [Route("{userId}/admin")]
         public IActionResult Admin(string userId)
         {
-       
+
             var user = _userCrudService.Get(userId);
             if (user == null)
                 return BadRequest(new { message = "User does not exist." });
-            user.IsAdmin=true;
+            user.IsAdmin = true;
             _userCrudService.Update(user.Id, user);
             return Ok(user);
         }
 
-        
+
         [Authorize]
         [HttpPost]
         [Route("~/api/user/logout")]
@@ -95,6 +102,6 @@ namespace MyHealth.Web.Controllers
         {
             return Ok();
         }
-       
+
     }
 }
