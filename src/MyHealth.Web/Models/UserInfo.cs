@@ -14,6 +14,7 @@ namespace MyHealth.Web.Models
         public string Password { get; set; }
         public string Salt { get; set; }
         public string Token { get; set; }
+        public string Gender { get; set; }
         public bool IsAdmin { get; set; }
         public string ImageUrl { get; set; }
         public string Role => IsAdmin ? "Admin" : "Guest";

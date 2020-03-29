@@ -2,7 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 const RadioWrapper = styled.div`
-  display: block;
+    display : block
+`;
+
+const RadioWrapperInline = styled.div`
+    display: inline-block;
 `;
 
 const Mark = styled.span`
@@ -58,14 +62,29 @@ const Label = styled.label`
     `}
 `;
 
-const RadioButton = ({ name, children, ...props }) => (
-  <RadioWrapper>
-    <Label>
-      <Input name={name} {...props} type="radio" />
-      <Mark />
-      {children}
-    </Label>
-  </RadioWrapper>
-);
+const RadioButton = ({ name, inline, children, ...props }) => {
+  if (inline) {
+    return (
+      <RadioWrapperInline>
+        <Label>
+          <Input name={name} {...props} type="radio" inline={inline} />
+          <Mark />
+          {children}
+        </Label>
+      </RadioWrapperInline>
+    );
+  }
+  return (
+    <RadioWrapper>
+      <Label>
+        <Input name={name} {...props} type="radio" inline={inline} />
+        <Mark />
+        {children}
+      </Label>
+    </RadioWrapper>
+  );
+
+}
+
 
 export default RadioButton;

@@ -1,4 +1,4 @@
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS } from '../actions/types';
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_START, REGISTER_SUCCESS, REGISTER_FAIL } from '../actions/types';
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -45,6 +45,20 @@ export default function (state = initialState, action) {
                 isLoading: false
             }
         }
+        case REGISTER_START: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case REGISTER_SUCCESS:
+        case REGISTER_FAIL: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
+
         default: {
             return state;
         }

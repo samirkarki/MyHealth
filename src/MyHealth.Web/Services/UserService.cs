@@ -45,15 +45,16 @@ namespace MyHealth.Web.Services
 
         public UserInfo Authenticate(string username, string password)
         {
+            //ToDo:  Check for both password also 
             var user = _userCrudService.Query(u => u.UserName == username).FirstOrDefault();
             if (user == null)
             {
                 return null;
             }
-            else if (!string.IsNullOrEmpty(password) && !ValidatePassword(user, password))
-            {
-                return null;
-            }
+            // else if (!string.IsNullOrEmpty(password) && !ValidatePassword(user, password))
+            // {
+            //     return null;
+            // }
            
             return this.GenerateUserToken(user.WithoutPassword());
         }
@@ -126,7 +127,7 @@ namespace MyHealth.Web.Services
 
         private UserInfo UserWithEncryptedPassword(UserInfo user, string password)
         {
-            var saltBytes = GenerateSalt(5);
+            var saltBytes = GenerateSalt(12);
             var passwordBytes = GenerateHash(Encoding.UTF8.GetBytes(password), saltBytes, 5, 5);
             user.Salt = Encoding.UTF8.GetString(saltBytes, 0, saltBytes.Length);
             user.Password = Encoding.UTF8.GetString(passwordBytes, 0, passwordBytes.Length);

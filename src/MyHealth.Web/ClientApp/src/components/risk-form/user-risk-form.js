@@ -19,9 +19,9 @@ const UserRiskForm = () => {
                     <label><strong>लिङ्ग :</strong></label><br />
                     <label>
                         <div>
-                            <RadioButton name="gender" value="M" onChange={(e) => { console.log(e.target.value) }}>पुरुस</RadioButton>
-                            <RadioButton name="gender" value="F" onChange={(e) => { console.log(e.target.value) }}>महिला</RadioButton>
-                            <RadioButton name="gender" value="O" onChange={(e) => { console.log(e.target.value) }}>अन्य</RadioButton>
+                            <RadioButton inline={true} name="gender" value="M" onChange={(e) => { console.log(e.target.value) }}>पुरुस</RadioButton>
+                            <RadioButton inline={true} name="gender" value="F" onChange={(e) => { console.log(e.target.value) }}>महिला</RadioButton>
+                            <RadioButton inline={true} name="gender" value="O" onChange={(e) => { console.log(e.target.value) }}>अन्य</RadioButton>
                         </div>
                     </label>
                 </fieldset>
@@ -33,9 +33,9 @@ const UserRiskForm = () => {
                     <label><strong>तपाइको वर्तमान तापक्रम :</strong></label><br />
                     <label>
                         <div>
-                            <RadioButton name="temperature" value="M" onChange={(e) => { console.log(e.target.value) }}>96.6-96.8</RadioButton>
-                            <RadioButton name="temperature" value="F" onChange={(e) => { console.log(e.target.value) }}>96.8-101</RadioButton>
-                            <RadioButton name="temperature" value="O" onChange={(e) => { console.log(e.target.value) }}>>102</RadioButton>
+                            <RadioButton inline={true} name="temperature" value="M" onChange={(e) => { console.log(e.target.value) }}>96.6-96.8</RadioButton>
+                            <RadioButton inline={true} name="temperature" value="F" onChange={(e) => { console.log(e.target.value) }}>96.8-101</RadioButton>
+                            <RadioButton inline={true} name="temperature" value="O" onChange={(e) => { console.log(e.target.value) }}>>102</RadioButton>
                         </div>
                     </label>
                 </fieldset>
@@ -235,8 +235,8 @@ const UserRiskForm = () => {
                     <label><strong>कोरोना सन्क्रमित सङग सम्पर्क भएको छ कि छैन ?</strong></label><br />
                     <label>
                         <div>
-                            <RadioButton name="contact" value="M" onChange={(e) => { console.log(e.target.value) }}>छ</RadioButton>
-                            <RadioButton name="contact" value="F" onChange={(e) => { console.log(e.target.value) }}>छैन</RadioButton>
+                            <RadioButton inline={true} name="contact" value="M" onChange={(e) => { console.log(e.target.value) }}>छ</RadioButton>
+                            <RadioButton inline={true} name="contact" value="F" onChange={(e) => { console.log(e.target.value) }}>छैन</RadioButton>
                         </div>
                     </label>
                 </fieldset>
@@ -289,8 +289,8 @@ const UserRiskForm = () => {
                     <label><strong>हाल कहाँ हुनुहुनछ ?</strong></label><br />
                     <label>
                         <div>
-                            <RadioButton name="place" value="M" onChange={(e) => { console.log(e.target.value) }}>Self Quarantine</RadioButton>
-                            <RadioButton name="place" value="F" onChange={(e) => { console.log(e.target.value) }}>Isolation</RadioButton>
+                            <RadioButton inline={true} name="place" value="M" onChange={(e) => { console.log(e.target.value) }}>Self Quarantine</RadioButton>
+                            <RadioButton inline={true} name="place" value="F" onChange={(e) => { console.log(e.target.value) }}>Isolation</RadioButton>
                         </div>
                     </label>
                 </fieldset>

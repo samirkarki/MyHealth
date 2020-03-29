@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { decodedToken } from '../../utils/tokenUtility';
 
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT_SUCCESS } from './types';
+import {
+    USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT_SUCCESS,
+    REGISTER_FAIL, REGISTER_SUCCESS, REGISTER_START
+} from './types';
+import { notifyError, notifySuccess } from '../../components/toast/toast';
 
 
 // check token and load user
@@ -20,7 +24,7 @@ export const loadUser = () => (dispatch, getState) => {
 }
 
 
-// LoginGoogle
+// Login 
 export const login = (userInfo) => dispatch => {
     // headers
     const config = {
@@ -31,16 +35,45 @@ export const login = (userInfo) => dispatch => {
     // request body
     const body = JSON.stringify(userInfo);
 
-    axios.post('/api/socialauthentication', body, config)
+    axios.post('/api/authentication', body, config)
         .then(res => {
             console.log(res.data)
             dispatch({ type: LOGIN_SUCCESS, payload: res.data })
+            notifySuccess('User logged in successfully.');
         })
         .catch(err => {
             console.log(err);
             dispatch({ type: LOGIN_FAIL })
+            notifyError('Cannot login current user. Please try again.')
         })
 }
+
+
+// register user 
+export const register_user = (userInfo) => dispatch => {
+    dispatch({ type: REGISTER_START });
+    // headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+    // request body
+    const body = JSON.stringify(userInfo);
+
+    axios.post('/api/users', body, config)
+        .then(res => {
+            console.log(res.data)
+            dispatch({ type: REGISTER_SUCCESS })
+            notifySuccess('User added successfully.');
+        })
+        .catch(err => {
+            console.log(err);
+            dispatch({ type: REGISTER_FAIL })
+            notifyError('Cannot register the user. Please try again.');
+        })
+}
+
 
 
 // Logout

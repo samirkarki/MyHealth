@@ -26,27 +26,37 @@ namespace MyHealth.Web.Controllers
         }
 
 
+        // [AllowAnonymous]
+        // [HttpPost]
+        // [Route("~/api/Authentication")]
+        // public IActionResult UserAuthentication(string username, string password)
+        // {
+
+        //     var user = _userService.Authenticate(username, password);
+
+        //     if (user == null)
+        //         return BadRequest(new { message = "Username or password is incorrect." });
+
+        //     UserDTO userInfo = new UserDTO();
+        //     userInfo.Email = user.Email;
+        //     userInfo.FirstName = user.FirstName;
+        //     userInfo.LastName = user.LastName;
+        //     userInfo.UserName = user.UserName;
+        //     userInfo.UserId = user.Id;
+        //     userInfo.Token = user.Token;
+        //     return Ok(userInfo);
+        // }
+
         [AllowAnonymous]
         [HttpPost]
-        [Route("~/api/Authentication")]
-        public IActionResult Authentication(string username, string password)
+        [Route("~/api/authentication")]
+        public IActionResult Authentication(UserInfo model)
         {
-
-            var user = _userService.Authenticate(username, password);
-
-            if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect." });
-
-            return Ok(user);
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("~/api/SocialAuthentication")]
-        public IActionResult SocialAuthentication(UserInfo model)
-        {
-
-            var user = _userService.SocialAuthenticate(model);
+            UserInfo user = new UserInfo();
+            if (String.IsNullOrEmpty(model.Password))
+                user = _userService.SocialAuthenticate(model);
+            else
+                user = _userService.Authenticate(model.UserName, model.Password);
 
             if (user == null)
                 return BadRequest(new { message = "User cannot be authenticated." });
@@ -65,7 +75,6 @@ namespace MyHealth.Web.Controllers
         [HttpPost]
         public IActionResult Post(UserInfo user)
         {
-
             var createdUser = _userService.Create(user);
 
             if (user == null)

@@ -3,21 +3,17 @@ import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { login } from '../../store/actions/authAction';
+import { login, login_usual } from '../../store/actions/authAction';
 import { GoogleClientId, FacebookAppId } from '../../utils/keys';
 
 const Login = () => {
 
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [UserName, setUserName] = useState('');
+    const [Password, setPassword] = useState('');
 
     const dispatch = useDispatch();
     const auth = useSelector(state => state.authReducer);
-
-
-    // const clientId = "749061088249-339fn2hlbc4tbg6e849oljsk52q3ou22.apps.googleusercontent.com";
-    // const fbAppId = "211665063234659";
 
     const responseGoogle = (response) => {
         console.log(response.profileObj)
@@ -67,6 +63,17 @@ const Login = () => {
     }
 
 
+    const handleSubmitLogin = (e) => {
+        e.preventDefault();
+        let userInfo = {
+            UserName: UserName,
+            Password: Password
+        }
+
+        dispatch(login(userInfo));
+    }
+
+
     if (auth.isAuthenticated) {
         return <Redirect to="/profile" />
     }
@@ -77,28 +84,50 @@ const Login = () => {
                 <div className="col-6">
                     <div className="card border-secondary mb-3" style={{ marginTop: '150px' }}>
                         <div className="card-header">Login</div>
-                        <div className="card-body text-center">
-                            <div>
-                                <GoogleLogin
-                                    clientId={GoogleClientId}
-                                    render={renderProps => (
-                                        <button className="btn btn-secondary" onClick={renderProps.onClick} disabled={renderProps.disabled}><span><i className="fa fa-google"></i></span>Sign in with Google</button>
-                                    )}
-                                    buttonText="Login"
-                                    onSuccess={responseGoogle}
-                                    onFailure={responseGoogle}
-                                    cookiePolicy={'single_host_origin'}
-                                />
+                        <div className="card-body">
+
+                            <div className="form">
+
+                                <div className="form-group">
+                                    <fieldset>
+                                        <label className="control-label">User Name</label>
+                                        <input className="form-control" type="text" placeholder="Name ..." onChange={e => setUserName(e.target.value)} />
+                                    </fieldset>
+                                </div>
+
+                                <div className="form-group">
+                                    <fieldset>
+                                        <label className="control-label">Email</label>
+                                        <input className="form-control" type="password" placeholder="Email" onChange={e => setPassword(e.target.value)} />
+                                    </fieldset>
+                                </div>
+
+                                <button type="button" onClick={handleSubmitLogin} className="btn btn-primary">Login</button>
                             </div>
-                            <div style={{ marginTop: '15px' }}>
-                                <FacebookLogin
-                                    appId={FacebookAppId}
-                                    fields="name,email,picture,first_name,last_name"
-                                    callback={responseFacebook}
-                                    render={renderProps => (
-                                        <button className="btn btn-info" onClick={renderProps.onClick}>Sign in with Facebook</button>
-                                    )}
-                                />
+
+                            <div className="text-center" style={{ marginTop: '15px'}}>
+                                <div>
+                                    <GoogleLogin
+                                        clientId={GoogleClientId}
+                                        render={renderProps => (
+                                            <button className="btn btn-secondary" onClick={renderProps.onClick} disabled={renderProps.disabled}><span><i className="fa fa-google"></i></span>Sign in with Google</button>
+                                        )}
+                                        buttonText="Login"
+                                        onSuccess={responseGoogle}
+                                        onFailure={responseGoogle}
+                                        cookiePolicy={'single_host_origin'}
+                                    />
+                                </div>
+                                <div style={{ marginTop: '15px' }}>
+                                    <FacebookLogin
+                                        appId={FacebookAppId}
+                                        fields="name,email,picture,first_name,last_name"
+                                        callback={responseFacebook}
+                                        render={renderProps => (
+                                            <button className="btn btn-info" onClick={renderProps.onClick}>Sign in with Facebook</button>
+                                        )}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
