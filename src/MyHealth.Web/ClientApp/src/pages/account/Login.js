@@ -27,8 +27,6 @@ const Login = () => {
         let name = response.profileObj.name;
         let access_token = response.tokenObj.access_token;
 
-        console.log(access_token)
-
         dispatch(login(name, email, imageUrl, access_token))
     }
 
@@ -39,7 +37,7 @@ const Login = () => {
         let picture = response.picture.data.url;
         let accessToken = response.accessToken;
 
-        console.log(accessToken, picture)
+        console.log(response)
         dispatch(login(name, email, picture, accessToken))
     }
 
