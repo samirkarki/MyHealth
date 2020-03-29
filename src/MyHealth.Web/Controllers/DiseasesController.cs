@@ -5,9 +5,7 @@ using MyHealth.Web.Services;
 
 namespace MyHealth.Web.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class DiseasesController : ControllerBase
+    public class DiseasesController : MyHealthController
     {
         private readonly CrudService<Disease> _diseaseService;
 
@@ -20,8 +18,13 @@ namespace MyHealth.Web.Controllers
         public List<Disease> Get() =>
             _diseaseService.Get();
 
-        [HttpGet("{id:length(24)}", Name = "GetDisease")]
+        [HttpGet("{id:length(24)}")]
         public ActionResult<Disease> Get(string id)
+        {
+            return GetDisease(id);
+        }
+
+        private ActionResult<Disease> GetDisease(string id)
         {
             var disease = _diseaseService.Get(id);
 
@@ -36,9 +39,7 @@ namespace MyHealth.Web.Controllers
         [HttpPost]
         public ActionResult<Disease> Create(Disease disease)
         {
-            _diseaseService.Create(disease);
-
-            return CreatedAtRoute("GetDisease", new { id = disease.Id.ToString() }, disease);
+            return _diseaseService.Create(disease);
         }
 
         [HttpPut("{id:length(24)}")]

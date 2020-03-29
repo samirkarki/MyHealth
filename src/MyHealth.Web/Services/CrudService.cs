@@ -6,6 +6,7 @@ using MyHealth.Web.Models;
 using PluralizeService.Core;
 using System;
 using System.Linq.Expressions;
+using MongoDB.Bson.Serialization;
 
 namespace MyHealth.Web.Services
 {
@@ -45,6 +46,11 @@ namespace MyHealth.Web.Services
             return _collection.Find(FilterDefinition<T>.Empty).ToList();
         }
         public IEnumerable<T> Query(Expression<Func<T, bool>> filter)
+        {
+            return _collection.Find(filter).ToList();
+        }
+
+        public IEnumerable<T> Query(string filter)
         {
             return _collection.Find(filter).ToList();
         }
