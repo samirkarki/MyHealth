@@ -27,14 +27,28 @@ namespace MyHealth.Web.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("~/api/Authenticate")]
-        public IActionResult Authenticate(UserDTO model)
+        [Route("~/api/Authentication")]
+        public IActionResult Authentication(string username, string password)
         {
        
-            var user = _userService.Authenticate(model.Email);
+            var user = _userService.Authenticate(username, password);
 
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "Username or password is incorrect." });
+
+            return Ok(user);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("~/api/SocialAuthentication")]
+        public IActionResult SocialAuthentication(UserInfo model)
+        {
+       
+            var user = _userService.SocialAuthenticate(model);
+
+            if (user == null)
+                return BadRequest(new { message = "User cannot be authenticated." });
 
             return Ok(user);
         }
@@ -47,7 +61,7 @@ namespace MyHealth.Web.Controllers
             var createdUser = _userService.Create(user);
 
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "User registration failed." });
 
             return Ok(user);
         }
@@ -66,7 +80,7 @@ namespace MyHealth.Web.Controllers
        
             var user = _userCrudService.Get(userId);
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "User does not exist." });
             user.IsAdmin=true;
             _userCrudService.Update(user.Id, user);
             return Ok(user);

@@ -16,8 +16,10 @@ namespace MyHealth.Web.Services
 
     public interface IUserService
     {
-        UserInfo Authenticate(string email, string password = null);
+        UserInfo Authenticate(string username, string password);
+        UserInfo SocialAuthenticate(UserInfo userIn);
         UserInfo Create(UserInfo user);
+
     }
 
 
@@ -41,27 +43,9 @@ namespace MyHealth.Web.Services
         }
 
 
-        public UserInfo Authenticate(string email, string password = null)
+        public UserInfo Authenticate(string username, string password)
         {
-            List<UserInfo> _users = new List<UserInfo>
-            {
-                new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com", IsAdmin = false }
-            };
-
-            var user = _userCrudService.Query(u=>u.Email==email).FirstOrDefault();
-
-
-            // if email and password given
-            // search database for the user
-            // get user, generate token
-            // else
-            // if email only is given
-            // search user by email
-            // get token
-            // end
-
-            //var user = _users.SingleOrDefault(x => x.Email == email);
-
+            var user = _userCrudService.Query(u=>u.UserName==username).FirstOrDefault();
             if (user == null)
             {
                 return null;
@@ -70,10 +54,18 @@ namespace MyHealth.Web.Services
             {
                 return null;
             }
-            else
+            return this.GenerateUserToken(user);
+        }
+
+        public UserInfo SocialAuthenticate(UserInfo userIn)
+        {
+
+            var user = _userCrudService.Query(u=>u.UserName==userIn.UserName).FirstOrDefault();
+            if (user == null)
             {
-                return this.GenerateUserToken(user);
+                user = Create(userIn);
             }
+            return this.GenerateUserToken(user);
         }
 
         public UserInfo Create(UserInfo user)
@@ -92,7 +84,8 @@ namespace MyHealth.Web.Services
                     new Claim(JwtRegisteredClaimNames.Email, user.Email.ToString()),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(ClaimTypes.Role, user.Role),
-                    new Claim(ClaimTypes.Name, user.Id.ToString()) 
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Name, user.UserName) 
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
