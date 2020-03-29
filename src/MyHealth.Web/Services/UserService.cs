@@ -45,32 +45,35 @@ namespace MyHealth.Web.Services
 
         public UserInfo Authenticate(string username, string password)
         {
-            var user = _userCrudService.Query(u=>u.UserName==username).FirstOrDefault();
+            var user = _userCrudService.Query(u => u.UserName == username).FirstOrDefault();
             if (user == null)
             {
                 return null;
             }
-            else if(!string.IsNullOrEmpty(password) && !ValidatePassword(user, password))
+            else if (!string.IsNullOrEmpty(password) && !ValidatePassword(user, password))
             {
                 return null;
             }
-            return this.GenerateUserToken(user);
+            return this.GenerateUserToken(user.WithoutPassword());
         }
 
         public UserInfo SocialAuthenticate(UserInfo userIn)
         {
 
-            var user = _userCrudService.Query(u=>u.UserName==userIn.UserName).FirstOrDefault();
+            var user = _userCrudService.Query(u => u.UserName == userIn.UserName).FirstOrDefault();
             if (user == null)
             {
                 user = Create(userIn);
             }
-            return this.GenerateUserToken(user);
+            return this.GenerateUserToken(user.WithoutPassword());
         }
 
         public UserInfo Create(UserInfo user)
         {
-            return _userCrudService.Create(UserWithEncryptedPassword(user,user.Password));
+            if (!String.IsNullOrEmpty(user.Password))
+                return _userCrudService.Create(UserWithEncryptedPassword(user, user.Password));
+            else
+                return _userCrudService.Create(user);
         }
 
         private UserInfo GenerateUserToken(UserInfo user)
@@ -81,22 +84,25 @@ namespace MyHealth.Web.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email.ToString()),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin":"Guest"),
                     new Claim(ClaimTypes.NameIdentifier, user.Id),
-                    new Claim(ClaimTypes.Name, user.UserName) 
+                    new Claim("UserName", user.UserName),
+                    new Claim("FirstName", user.FirstName),
+                    new Claim("LastName", user.LastName),
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
-            user.Password=null;
+            user.Password = null;
             return user;
         }
 
-      
+
 
         private byte[] GenerateSalt(int length)
         {
@@ -118,17 +124,19 @@ namespace MyHealth.Web.Services
             }
         }
 
-        private UserInfo UserWithEncryptedPassword(UserInfo user, string password){
+        private UserInfo UserWithEncryptedPassword(UserInfo user, string password)
+        {
             var saltBytes = GenerateSalt(5);
-            var passwordBytes = GenerateHash(Encoding.UTF8.GetBytes(password),saltBytes,5,5);
-            user.Salt=Encoding.UTF8.GetString(saltBytes, 0, saltBytes.Length);
-            user.Password=Encoding.UTF8.GetString(passwordBytes, 0, passwordBytes.Length);
+            var passwordBytes = GenerateHash(Encoding.UTF8.GetBytes(password), saltBytes, 5, 5);
+            user.Salt = Encoding.UTF8.GetString(saltBytes, 0, saltBytes.Length);
+            user.Password = Encoding.UTF8.GetString(passwordBytes, 0, passwordBytes.Length);
             return user;
         }
-        
-        private bool ValidatePassword(UserInfo user, string inputPassword){
-            var inputPasswordBytes =  GenerateHash(Encoding.UTF8.GetBytes(inputPassword),Encoding.UTF8.GetBytes(user.Salt),5,5);
-            return user.Password==Encoding.UTF8.GetString(inputPasswordBytes);
+
+        private bool ValidatePassword(UserInfo user, string inputPassword)
+        {
+            var inputPasswordBytes = GenerateHash(Encoding.UTF8.GetBytes(inputPassword), Encoding.UTF8.GetBytes(user.Salt), 5, 5);
+            return user.Password == Encoding.UTF8.GetString(inputPasswordBytes);
         }
     }
 }

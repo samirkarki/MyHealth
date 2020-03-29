@@ -19,26 +19,50 @@ const Login = () => {
     const fbAppId = "211665063234659";
 
     const responseGoogle = (response) => {
+        console.log(response.profileObj)
 
-        console.log(response)
-       
-        let imageUrl = response.profileObj.imageUrl;
-        let email = response.profileObj.email;
-        let name = response.profileObj.name;
-        let access_token = response.tokenObj.access_token;
+        let email = null;
+        if (response.profileObj.email == '' || response.profileObj.email == null) {
+            email = 'username@noemail.com';
+        } else {
+            email = response.profileObj.email
+        }
 
-        dispatch(login(name, email, imageUrl, access_token))
+        let userInfo = {
+            imageUrl: response.profileObj.imageUrl,
+            email: email,
+            firstName: response.profileObj.givenName,
+            lastName: response.profileObj.familyName,
+            fullName: response.profileObj.name,
+            userName: 'user_' + response.googleId
+        }
+
+        console.log(userInfo)
+
+        dispatch(login(userInfo))
     }
 
     const responseFacebook = (response) => {
-        
-        let name = response.name;
-        let email = response.name;
-        let picture = response.picture.data.url;
-        let accessToken = response.accessToken;
 
         console.log(response)
-        dispatch(login(name, email, picture, accessToken))
+        let email = null;
+        if (response.email == '' || response.email == null) {
+            email = 'username@noemail.com';
+        } else {
+            email = response.email
+        }
+
+        let userInfo = {
+            imageUrl: response.picture.data.url,
+            email: email,
+            firstName: response.last_name,
+            lastName: response.first_name,
+            fullName: response.name,
+            userName: 'user_' + response.id
+        }
+
+        console.log(userInfo)
+        dispatch(login(userInfo))
     }
 
 
@@ -68,7 +92,7 @@ const Login = () => {
                             <div style={{ marginTop: '15px' }}>
                                 <FacebookLogin
                                     appId={fbAppId}
-                                    fields="name,email,picture"
+                                    fields="name,email,picture,first_name,last_name"
                                     callback={responseFacebook}
                                     render={renderProps => (
                                         <button className="btn btn-info" onClick={renderProps.onClick}>Sign in with Facebook</button>

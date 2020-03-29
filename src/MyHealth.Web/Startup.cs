@@ -62,6 +62,7 @@ namespace MyHealth.Web
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
+                    ValidateLifetime = true,
                     // ValidIssuer = "https://localhost:5001/",
                     //ValidAudience = "https://localhost:5001/",
                 };

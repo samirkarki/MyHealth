@@ -25,6 +25,7 @@ namespace MyHealth.Web.Controllers
             _userCrudService = userCrudService;
         }
 
+
         [AllowAnonymous]
         [HttpPost]
         [Route("~/api/Authentication")]
@@ -84,6 +85,15 @@ namespace MyHealth.Web.Controllers
             user.IsAdmin=true;
             _userCrudService.Update(user.Id, user);
             return Ok(user);
+        }
+
+        
+        [Authorize]
+        [HttpPost]
+        [Route("~/api/user/logout")]
+        public IActionResult Logout(string filter)
+        {
+            return Ok();
         }
        
     }
