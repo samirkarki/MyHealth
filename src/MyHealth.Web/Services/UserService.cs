@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -15,9 +16,8 @@ namespace MyHealth.Web.Services
 
     public interface IUserService
     {
-        UserInfo Authenticate(string email);
-        UserInfo Authenticate(string email, string password);
-        void Create(UserInfo model);
+        UserInfo Authenticate(string email, string password = null);
+        void Create(UserInfo user);
     }
 
 
@@ -41,12 +41,15 @@ namespace MyHealth.Web.Services
         }
 
 
-        public UserInfo Authenticate(string email, string password)
+        public UserInfo Authenticate(string email, string password = null)
         {
             List<UserInfo> _users = new List<UserInfo>
             {
                 new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com", Role = Role.Admin }
             };
+
+            var user = _userCrudService.Query(u=>u.Email==email).FirstOrDefault();
+
 
             // if email and password given
             // search database for the user
@@ -57,48 +60,28 @@ namespace MyHealth.Web.Services
             // get token
             // end
 
-            var user = _users.SingleOrDefault(x => x.Email == email);
+            //var user = _users.SingleOrDefault(x => x.Email == email);
 
             if (user == null)
             {
                 return null;
             }
-
-            var user_info_token = this.generateUserToken(user);
-            // return basic user info (without password) and token to store client side
-            return user.WithoutPassword();
+            else if(!string.IsNullOrEmpty(password) && !ValidatePassword(user, password))
+            {
+                return null;
+            }
+            else
+            {
+                return this.GenerateUserToken(user);
+            }
         }
 
-        public UserInfo Authenticate(string email)
+        public void Create(UserInfo user)
         {
-            List<UserInfo> _users = new List<UserInfo>
-            {
-                new UserInfo { Id = "1", FirstName = "Test", LastName = "User", UserName = "test", Email = "contact.me.manoz@gmail.com", Role = Role.Admin }
-            };
-
-            // if email and password given
-            // search database for the user
-            // get user, generate token
-            // else
-            // if email only is given
-            // search user by email
-            // get token
-            // end
-
-            var user = _users.SingleOrDefault(x => x.Email == email);
-
-            if (user == null)
-            {
-                return null;
-            }
-
-            var user_info_token = this.generateUserToken(user);
-
-            // return basic user info (without password) and token to store client side
-            return user_info_token.WithoutPassword();
+            _userCrudService.Create(UserWithEncryptedPassword(user,user.Password));
         }
 
-        protected UserInfo generateUserToken(UserInfo user)
+        private UserInfo GenerateUserToken(UserInfo user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -116,13 +99,43 @@ namespace MyHealth.Web.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
-
+            user.Password=null;
             return user;
         }
 
-        public void Create(UserInfo model)
+      
+
+        private byte[] GenerateSalt(int length)
         {
-            throw new NotImplementedException();
+            var bytes = new byte[length];
+
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(bytes);
+            }
+
+            return bytes;
+        }
+
+        private byte[] GenerateHash(byte[] password, byte[] salt, int iterations, int length)
+        {
+            using (var deriveBytes = new Rfc2898DeriveBytes(password, salt, iterations))
+            {
+                return deriveBytes.GetBytes(length);
+            }
+        }
+
+        private UserInfo UserWithEncryptedPassword(UserInfo user, string password){
+            var saltBytes = GenerateSalt(5);
+            var passwordBytes = GenerateHash(Encoding.UTF8.GetBytes(password),saltBytes,5,5);
+            user.Salt=Encoding.UTF8.GetString(saltBytes, 0, saltBytes.Length);
+            user.Password=Encoding.UTF8.GetString(passwordBytes, 0, passwordBytes.Length);
+            return user;
+        }
+        
+        private bool ValidatePassword(UserInfo user, string inputPassword){
+            var inputPasswordBytes =  GenerateHash(Encoding.UTF8.GetBytes(inputPassword),Encoding.UTF8.GetBytes(user.Salt),5,5);
+            return user.Password==Encoding.UTF8.GetString(inputPasswordBytes);
         }
     }
 }
