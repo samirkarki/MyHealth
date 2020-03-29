@@ -21,6 +21,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: |
+            cd src/MyHealthDb.Web
+            dotnet restore
             cd ClientApp
             npm install
             cd..
