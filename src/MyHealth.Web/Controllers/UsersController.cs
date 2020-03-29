@@ -27,7 +27,7 @@ namespace MyHealth.Web.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("~/api/authenticate")]
+        [Route("~/api/Authenticate")]
         public IActionResult Authenticate(UserDTO model)
         {
        
