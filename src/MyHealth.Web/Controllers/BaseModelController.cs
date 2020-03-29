@@ -20,12 +20,12 @@ namespace MyHealth.Web.Controllers
         }
 
         [HttpGet]
-        [Route("Get")]
+        [Route("")]
          public List<T> Get() =>
             _crudService.Get();
 
         [HttpGet]
-        [Route("Get/{id}")]
+        [Route("{id}")]
         public ActionResult<T> Get(string id)
         {
             return GetModel(id);
@@ -44,15 +44,15 @@ namespace MyHealth.Web.Controllers
         }
 
         [HttpPost]
-        [Route("Post")]
+        [Route("")]
         public ActionResult<T> Post(T model)
         {
             return _crudService.Create(model);
         }
 
         
-        [HttpPost]
-        [Route("Put/{id}")]
+        [HttpPut]
+        [Route("{id}")]
         public IActionResult Put(string id, T modelIn)
         {
             var model = _crudService.Get(id);
@@ -68,8 +68,8 @@ namespace MyHealth.Web.Controllers
         }
 
         
-        [HttpPost]
-        [Route("Delete/{id}")]
+        [HttpDelete]
+        [Route("{id}")]
         public IActionResult Delete(string id)
         {
             var model = _crudService.Get(id);
