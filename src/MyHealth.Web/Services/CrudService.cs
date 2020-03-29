@@ -7,17 +7,32 @@ using PluralizeService.Core;
 using System;
 using System.Linq.Expressions;
 using MongoDB.Bson.Serialization;
+using System.Linq;
 
 namespace MyHealth.Web.Services
 {
     public class CrudService<T> where T : BaseModel
     {
         private readonly IMongoCollection<T> _collection;
+
+        private static IList<string> collectionNames{get;set;}
         public CrudService(IMyHealthDbSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _collection = database.GetCollection<T>(PluralizationProvider.Pluralize(typeof(T).Name));
+            if(collectionNames==null)
+            {
+                collectionNames =  new List<string>();
+                foreach (var item in database.ListCollectionsAsync().Result.ToListAsync<BsonDocument>().Result)
+                {
+                    collectionNames.Add(item["name"].ToString());
+                }
+            }
+            var currentCollectionName = PluralizationProvider.Pluralize(typeof(T).Name);
+            if(!collectionNames.Any(c=>c==currentCollectionName)){
+                database.CreateCollection(currentCollectionName);
+            }
+            _collection = database.GetCollection<T>(currentCollectionName);
         }
 
         public List<T> Get() =>

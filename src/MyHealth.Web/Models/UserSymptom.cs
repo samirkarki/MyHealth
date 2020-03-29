@@ -3,14 +3,12 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace MyHealth.Web.Models
 {
-    public class DiseaseSymptom : BaseModel
+    public class UserSymptom : BaseModel
     {
-        public string DiseaseId { get; set; }
+        public string UserId { get; set; }
         public string SymptomId { get; set; }
         public string SymptomDetailId { get; set; }
-        public decimal Score { get; set; }
-
-        public bool IsMajorSymptom {get;set;}
+        public bool Selected {get;set;}
         
     }
 }
