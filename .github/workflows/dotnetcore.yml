@@ -24,7 +24,7 @@ jobs:
             dotnet restore
             cd ClientApp
             npm install
-            cd..
+            cd ..
             dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
