@@ -5,8 +5,6 @@ namespace MyHealth.Web.Models
 {
     public class Disease : BaseModel
     {
-
-        [BsonElement("Name")]
         public string Name { get; set; }
         
     }
