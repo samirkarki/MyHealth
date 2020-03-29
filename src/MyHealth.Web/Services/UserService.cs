@@ -17,7 +17,7 @@ namespace MyHealth.Web.Services
     public interface IUserService
     {
         UserInfo Authenticate(string email, string password = null);
-        void Create(UserInfo user);
+        UserInfo Create(UserInfo user);
     }
 
 
@@ -76,9 +76,9 @@ namespace MyHealth.Web.Services
             }
         }
 
-        public void Create(UserInfo user)
+        public UserInfo Create(UserInfo user)
         {
-            _userCrudService.Create(UserWithEncryptedPassword(user,user.Password));
+            return _userCrudService.Create(UserWithEncryptedPassword(user,user.Password));
         }
 
         private UserInfo GenerateUserToken(UserInfo user)

@@ -39,6 +39,20 @@ namespace WebApi.Controllers
 
             return Ok(user);
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("create")]
+        public IActionResult Create(UserInfo user)
+        {
+       
+            var createdUser = _userService.Create(user);
+
+            if (user == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(user);
+        }
        
     }
 }
