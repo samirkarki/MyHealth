@@ -50,6 +50,13 @@ namespace MyHealth.Web.Controllers
             return _crudService.Create(model);
         }
 
+        [HttpPost]
+        [Route("array")]
+        public ActionResult<IList<T>> PostArray(IList<T> models)
+        {
+            return Ok(_crudService.CreateMany(models));
+        }
+
         
         [HttpPut]
         [Route("{id}")]
