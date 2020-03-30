@@ -10,7 +10,6 @@ namespace MyHealth.Web.Models
         public string SymptomId { get; set; }
         public string SymptomDetailId { get; set; }
         public bool Selected {get;set;}
-        public IList<Symptom> Symptoms{get;set;}
         
         
     }

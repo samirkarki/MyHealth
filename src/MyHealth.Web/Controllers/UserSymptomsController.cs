@@ -18,23 +18,22 @@ namespace MyHealth.Web.Controllers
     
 
         [HttpGet]
-        [Route("{userId}/questionnaire")]
-        public ActionResult<IEnumerable<UserSymptom>> Questionnaire(string userId)
+        [Route("~/api/questionnaire/{userId}")]
+        public ActionResult<IEnumerable<UserInfo>> Questionnaire(string userId)
         {
+            var userInfo = new UserInfo{Id=userId, Symptoms = new List<Symptom>()};
+            
             var userSymptoms = _crudService.Query(u=>u.UserId==userId);
-            foreach(var userSymptom in userSymptoms){
-                if(userSymptom.Symptoms==null){
-                    userSymptom.Symptoms = new List<Symptom>();
-                }
-                var symptom = userSymptom.Symptoms.FirstOrDefault(s=>s.Id==userSymptom.SymptomId);
+            foreach(var symptomId in userSymptoms.Select(s=>s.SymptomId).Distinct()){
+                var symptom = userInfo.Symptoms.FirstOrDefault(s=>s.Id==symptomId);
                 if(symptom == null)
                 {
-                    symptom = _symptomService.Query(s=>s.Id==userSymptom.SymptomId).First();
-                    symptom.SymptomDetails = _symptomDetailService.Query(s=>s.SymptomId==userSymptom.SymptomId);
-                    userSymptom.Symptoms.Add(symptom);
+                    symptom = _symptomService.Query(s=>s.Id==symptomId).First();
+                    symptom.SymptomDetails = _symptomDetailService.Query(s=>s.SymptomId==symptomId);
+                    userInfo.Symptoms.Add(symptom);
                 } 
             }
-            return Ok(userSymptoms);
+            return Ok(userInfo);
         }
     }
 }
