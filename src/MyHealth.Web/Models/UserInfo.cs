@@ -20,6 +20,6 @@ namespace MyHealth.Web.Models
         public string ImageUrl { get; set; }
         public string Role => IsAdmin ? "Admin" : "Guest";
         public bool IsDeleted { get; set; }
-        public IList<Symptom> Symptoms{get;set;}
+        public IEnumerable<Symptom> Symptoms{get;set;}
     }
 }
