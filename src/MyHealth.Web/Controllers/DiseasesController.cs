@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyHealth.Web.Models;
 using MyHealth.Web.Services;
 
 namespace MyHealth.Web.Controllers
 {
+    [Authorize]
     public class DiseasesController : BaseModelController<Disease>
     {
         private readonly CrudService<DiseaseSymptom> _diseaseSymptomService;

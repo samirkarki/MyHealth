@@ -51,7 +51,7 @@ namespace MyHealth.Web.Controllers
         }
 
         [HttpPost]
-        [Route("array")]
+        [Route("multiple")]
         public ActionResult<IList<T>> PostArray(IList<T> models)
         {
             return Ok(_crudService.CreateMany(models));

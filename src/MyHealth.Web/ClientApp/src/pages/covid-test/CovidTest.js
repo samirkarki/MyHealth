@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import UserRiskForm from '../../components/risk-form/user-risk-form';
 
-const Home = () => {
+const CovidTest = () => {
     return (
         <Fragment>
 
@@ -12,9 +12,10 @@ const Home = () => {
                         Hi! Our coronavirus disease self assessment scan has been developed on the basis of guidelines from the WHO and MoH, Government of Nepal. This interaction should not be taken as expert medical advice. Any information you share with us will be kept strictly confidential.
                     </p>
                 </div>
+                <UserRiskForm />
             </div>
         </Fragment>
     )
 }
 
-export default Home;
+export default CovidTest;

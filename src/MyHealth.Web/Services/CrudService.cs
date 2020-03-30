@@ -52,7 +52,6 @@ namespace MyHealth.Web.Services
             _collection.InsertMany(items);
             return items;
         }
-
         public void Update(string id, T itemIn) =>
             _collection.ReplaceOne(item => item.Id == id, itemIn);
 

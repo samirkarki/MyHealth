@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
-import leadReducer from './leadReducer';
 import authReducer from './authReducer';
+import countryReducer from './countryReducer';
+import diseaseReducer from './diseaseReducer';
+import symptomsReducer from './symptomsReducer';
 
 export default combineReducers({
-    leadReducer,
-    authReducer
+    authReducer,
+    countryReducer,
+    diseaseReducer,
+    symptomsReducer
 });

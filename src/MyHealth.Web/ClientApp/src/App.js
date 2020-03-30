@@ -16,6 +16,8 @@ import Diseases from './pages/admin/diseases';
 import CatsForm from './pages/admin/form';
 import AdminManagement from './pages/admin/management';
 import Profile from './pages/profile/Profile';
+import CovidTest from './pages/covid-test/CovidTest';
+import AdminRoutes from './components/common/AdminRoutes';
 
 class App extends Component {
 
@@ -31,14 +33,18 @@ class App extends Component {
                         <Header />
                         <div className="container">
                             <div className="row">
-                                <Route exact path="/" component={Home} />
-                                <Route exact path="/register" component={Register} />
-                                <Route exact path="/login" component={Login} />
-                                <PrivateRoutes exact path="/profile" component={Profile} />   
-                                <Route exact path="/admin/dashboard" component={Dashboard} />   
-                                <Route exact path="/admin/diseases" component={Diseases} />   
-                                <Route exact path="/admin/catform" component={CatsForm} />   
-                                <Route exact path="/admin/management" component={AdminManagement} />
+                                <Switch>
+                                    <Route exact path="/" component={Home} />
+                                    <Route exact path="/register" component={Register} />
+                                    <Route exact path="/login" component={Login} />
+                                    <PrivateRoutes path="/user-profile" component={Profile} />
+                                    <PrivateRoutes path="/test-covid" component={CovidTest} />
+                                    <PrivateRoutes path="/admin/management" component={AdminManagement} />
+                                    <Route exact path="/admin/dashboard" component={Dashboard} />
+                                    <Route exact path="/admin/diseases" component={Diseases} />
+                                    <Route exact path="/admin/catform" component={CatsForm} />
+                                    <Route path="*" component={() => <h1>Not found</h1>} />
+                                </Switch>
                             </div>
                         </div>
                     </Fragment>

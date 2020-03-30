@@ -16,7 +16,7 @@ const Header = () => {
                     <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/report" className="nav-link">Reports</Link>
+                    <Link to="/test-covid" className="nav-link">Test Yourself</Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/register" className="nav-link">Register</Link>
@@ -35,10 +35,13 @@ const Header = () => {
                     <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/report" className="nav-link">Reports</Link>
+                    <Link to="/test-covid" className="nav-link">Test Yourself</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/profile" className="nav-link">Profile</Link>
+                    <Link to="/user-profile" className="nav-link">Profile</Link>
+                </li>
+                <li className="nav-item">
+                    <Link to="/admin/management" className="nav-link">admin</Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/" onClick={() => dispatch(logout())} className="nav-link">Logout</Link>

@@ -96,8 +96,10 @@ export const logout = () => (dispatch, getState) => {
     axios.post('/api/user/logout', null, config)
         .then(res => {
             dispatch({ type: LOGOUT_SUCCESS })
+            notifySuccess("User logged out successfully.")
         })
         .catch(err => {
             console.log(err);
+            notifyError("Failed to logout user. Please try again.")
         })
 }

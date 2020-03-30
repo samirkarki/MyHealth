@@ -1,18 +1,20 @@
 import React from 'react';
-import DiseaseForm from './disease/disease-form';
-import TemperatureForm from './disease/temperature-form';
-import InfectedCountryForm from './disease/infected-country-form';
-import SymptomsForm from './disease/symptoms-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import DiseaseForm from '../admin/disease/disease-form';
+import InfectedCountryForm from '../admin/country/infected-country-form';
+import SymptomsForm from '../admin/symptoms/symptoms-form';
 
 const AdminManagement = () => {
+
+    const dispatch = useDispatch();
+    const auth = useSelector(state => state.authReducer);
+
     return (
         <div className="col-md-12" style={{ marginTop: '15px' }}>
             <ul className="nav nav-tabs">
                 <li className="nav-item">
                     <a className="nav-link active" data-toggle="tab" href="#disease">Disease</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" data-toggle="tab" href="#temperature">Temperature</a>
                 </li>
                 <li className="nav-item">
                     <a className="nav-link" data-toggle="tab" href="#symptoms">Symptoms</a>
@@ -26,13 +28,6 @@ const AdminManagement = () => {
                     <div className="card border-secondary mb-3" style={{ marginTop: '10px' }}>
                         <div className="card-body">
                             <DiseaseForm />
-                        </div>
-                    </div>
-                </div>
-                <div className="tab-pane fade" id="temperature">
-                    <div className="card border-secondary mb-3" style={{ marginTop: '10px' }}>
-                        <div className="card-body">
-                            <TemperatureForm />
                         </div>
                     </div>
                 </div>

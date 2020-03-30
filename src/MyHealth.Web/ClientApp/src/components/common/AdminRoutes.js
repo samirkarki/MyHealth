@@ -2,12 +2,12 @@ import React, { Component, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-const PrivateRoutes = ({ component: Component, ...rest }) => {
+const AdminRoutes = ({ component: Component, ...rest }) => {
     const dispatch = useDispatch()
     const auth = useSelector(state => state.authReducer);
 
     return (
-        <Route exact
+        <Route
             {...rest}
             render={props => {
                 if (auth.isLoading) {
@@ -15,11 +15,15 @@ const PrivateRoutes = ({ component: Component, ...rest }) => {
                 } else if (!auth.isAuthenticated) {
                     return <Redirect to="/login" />
                 } else {
-                    return <Component {...props} />
+                    if(auth.user.Role !== 'Admin') {
+                        return <Redirect to="/" />
+                    }else{
+                        return <Component {...props} />
+                    }
                 }
             }}
         />
     )
 }
 
-export default PrivateRoutes;
+export default AdminRoutes;

@@ -1,10 +1,30 @@
 // Form.js
 
-import React, { useState } from 'react';
+import React, { useState, Fragment, useEffect, useCallback } from 'react';
 import DiseaseInputs from '../../../components/form-inputs/DiseaseInputs';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveDisease, load, updateItem, remove } from '../../../store/actions/diseaseActions';
+import ClientPagination from '../../../components/pagination/client-side-pagination';
+import { getCurrentPaginatedItems } from '../../../utils/table-helper';
+import DiseaseTable from './disease-crud-table';
+import EditDiseaseForm from './disease-edit-form';
 
 const DiseaseForm = () => {
 
+    const dispatch = useDispatch();
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(3);
+    const [editing, setEditing] = useState(false);
+    const [currentEditItem, setCurrentEditItem] = useState();
+
+    const tableData = useSelector(state => state.diseaseReducer);
+
+    useEffect(() => {
+        dispatch(load())
+    }, [])
+
+    // add form logic
     const blankDisease = { name: '' };
     const [diseaseState, setDiseaseState] = useState([
         { ...blankDisease },
@@ -20,32 +40,112 @@ const DiseaseForm = () => {
         setDiseaseState(updatedDisease);
     };
 
-    const submitForm = (e) => {
-        e.preventDefault();
-        console.log(diseaseState)
+    const clearForm = () => {
+        setDiseaseState([
+            { ...blankDisease }
+        ]);
     }
 
+    // add form ends
+
+    // CRUD portion
+    // INSERT
+
+    const submitForm = (e) => {
+        e.preventDefault();
+        let diseaseArr = JSON.stringify(diseaseState);
+        dispatch(saveDisease(diseaseArr));
+        clearForm();
+    }
+
+    // DELETE
+    const deleteDisease = (id) => {
+        setEditing(false);
+        if (window.confirm('Are you sure to delete ?')) {
+            dispatch(remove(id));
+        }
+    }
+
+    const update = (item) => {
+        setEditing(false);
+        dispatch(updateItem(item));
+    }
+
+    const editRow = (item) => {
+        setEditing(true);
+        setCurrentEditItem(item);
+    }
+    // end CRUD
+
+
+    // pagination
+    let currentDataItems = []
+    if (tableData.diseaseInfo) {
+        console.log(tableData.diseaseInfo)
+        currentDataItems = getCurrentPaginatedItems(currentPage, itemsPerPage, tableData.diseaseInfo);
+    }
+
+    const callback = (data) => {
+        setCurrentPage(data);
+    }
+    // end pagination
+
     return (
-        <form onSubmit={submitForm} style={{marginTop: '5px'}}>
-            <input
-                type="button"
-                className="btn btn-primary btn-sm float-right"
-                value="Add New Disease"
-                onClick={addDisease}
-            />
-            <div className="clearfix"></div>
-            {
-                diseaseState.map((val, idx) => (
-                    <DiseaseInputs
-                        key={`disease-${idx}`}
-                        idx={idx}
-                        diseaseState={diseaseState}
-                        handleDiseaseChange={handleDiseaseChange}
-                    />
-                ))
-            }
-            <input type="submit" value="Submit" className="btn btn-primary"/>
-        </form>
+        <div className="row">
+            <div className="col-md-4">
+                {editing ? (
+                    <Fragment>
+                        <h3>Edit Disease</h3>
+                        <div className="clearfix"></div>
+
+                        <EditDiseaseForm
+                            editing={editing}
+                            setEditing={setEditing}
+                            currentDisease={currentEditItem}
+                            update={update}
+                        />
+                    </Fragment>
+                ) : (
+                        <form onSubmit={submitForm} style={{ marginTop: '5px' }}>
+                            <h3>Add Disease</h3>
+
+                            <input
+                                type="button"
+                                className="btn btn-primary btn-sm float-right"
+                                value="Add New Disease"
+                                onClick={addDisease}
+                            />
+
+                            <div className="clearfix"></div>
+
+                            <Fragment>
+                                {diseaseState.map((val, idx) => (
+                                    <DiseaseInputs
+                                        key={`disease-${idx}`}
+                                        idx={idx}
+                                        diseaseState={diseaseState}
+                                        handleDiseaseChange={handleDiseaseChange}
+                                        required={true}
+                                    />
+                                ))}
+                            </Fragment>
+                            <input type="submit" value="Submit" className="btn btn-primary" />
+                        </form>
+                    )}
+            </div>
+            <div className="col-md-8">
+                <ClientPagination
+                    data={tableData.diseaseInfo != null ? tableData.diseaseInfo : []}
+                    itemsPerPage={itemsPerPage}
+                    activeClassName=''
+                    parentCallback={callback}
+                >
+                    <DiseaseTable data={currentDataItems} editRow={editRow} delete={deleteDisease} />
+                </ClientPagination>
+            </div>
+
+        </div>
+
     );
 };
 

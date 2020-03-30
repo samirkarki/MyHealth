@@ -75,7 +75,11 @@ const Login = () => {
 
 
     if (auth.isAuthenticated) {
-        return <Redirect to="/profile" />
+        if(auth.user.Role == 'Admin') {
+            return <Redirect to="/admin/dashboard" />
+        }else{
+            return <Redirect to="/test-covid" />
+        }
     }
 
     return (

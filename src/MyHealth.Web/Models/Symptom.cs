@@ -6,7 +6,7 @@ namespace MyHealth.Web.Models
 {
     public class Symptom : BaseModel
     {
-        public string Description { get; set; }
+        public string Name { get; set; }
         public string Remarks { get; set; }
         public IEnumerable<SymptomDetail> SymptomDetails{get;set;}
     }
