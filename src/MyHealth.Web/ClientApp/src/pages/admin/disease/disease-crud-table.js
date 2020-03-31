@@ -24,6 +24,15 @@ const DiseaseTable = ({ ...props }) => {
                                     Edit
                                 </button>
                                 <button
+                                    onClick={() => {
+                                        props.showSymptoms(item)
+                                    }}
+                                    className="btn btn-secondary btn-sm"
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    Symptoms
+                                </button>
+                                <button
                                     onClick={() => props.delete(item.id)}
                                     className="btn btn-primary btn-sm"
                                     style={{ marginLeft: '15px'}}
