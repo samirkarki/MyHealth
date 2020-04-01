@@ -46,5 +46,13 @@ namespace MyHealth.Web.Controllers
             return Ok(diseaseSymptoms);
         }
 
-   }
+        [HttpGet]
+        [Route("{diseaseId}/symptoms/add")]
+        public ActionResult<Disease> GetSymptomDetailAdd(string diseaseId)
+        {
+            var diseaseSymptoms = _questionnaireService.GetDiseaseSymptomsToAdd(diseaseId);
+            return Ok(diseaseSymptoms);
+        }
+
+    }
 }

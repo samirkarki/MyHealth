@@ -86,6 +86,10 @@ const DiseaseForm = () => {
     setCurrentEditItem(item);
   };
 
+  const backToList = () => {
+    setShowSymptoms(false);
+  };
+
   // pagination
   let currentDataItems = [];
   if (tableData.diseaseInfo) {
@@ -103,16 +107,19 @@ const DiseaseForm = () => {
   // end pagination
 
   return (
-    <div >
+    <div>
       {showSymptoms ? (
-        <DiseaseSymptomMap currentDisease={currentEditItem}/>
+        <DiseaseSymptomMap
+          currentDisease={currentEditItem}
+          backToList={backToList}
+        />
       ) : (
         <div className="row">
           <div className="col-md-4">
             {editing ? (
               <Fragment>
                 <h3>Edit Disease</h3>
-                <div className="clearfix"></div> 
+                <div className="clearfix"></div>
 
                 <EditDiseaseForm
                   editing={editing}

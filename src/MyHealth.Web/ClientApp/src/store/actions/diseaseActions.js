@@ -99,20 +99,27 @@ export const remove = id => dispatch => {
     });
 };
 
-export const getdiseasesymptoms = id => dispatch => {
-  dispatch({ type: LOAD_DISEASE_SYMPTOMS_START });
-
+export const getdiseasesymptoms = async id => {
+  let symptoms = [];
   let config = tokenConfig();
-  axios
-    .get(`/api/${id}/symptoms`, config)
-    .then(res => {
-      dispatch({ type: LOAD_DISEASE_SYMPTOMS_SUCCESS, payload: res.data });
-      //dispatch(load());
-      //notifySuccess("Disease added successfully.");
-    })
-    .catch(err => {
-      console.log(err);
-      dispatch({ type: LOAD_DISEASE_SYMPTOMS_ERROR });
-      notifyError("Cannot get symptoms. Please try again.");
-    });
+  symptoms = await axios.get(`/api/diseases/${id}/symptoms/details`, config);
+  if (symptoms.status === 200) {
+    return symptoms.data;
+  } else {
+    notifyError("Cannot get symptoms. Please try again.");
+    return null;
+  }
+};
+
+//getDiseaseSymptomsToAdd
+export const getDiseaseSymptomsToAdd = async id => {
+  let symptoms = [];
+  let config = tokenConfig();
+  symptoms = await axios.get(`/api/diseases/${id}/symptoms/add`, config);
+  if (symptoms.status === 200) {
+    return symptoms.data;
+  } else {
+    notifyError("Cannot get symptoms. Please try again.");
+    return null;
+  }
 };
