@@ -46,13 +46,24 @@ namespace MyHealth.Web.Services
         public IEnumerable<Symptom> GetSymptoms(){
             var activeDiseases = _appSettings.ActiveDiseases.Split(',');
             var diseaseIds = _diseaseService.Query(d=>activeDiseases.Contains(d.Name)).Select(d=>d.Id);
-            var symptomIds = _diseaseSymptomService.Query(ds=>diseaseIds.Contains(ds.DiseaseId)).Select(ds=>ds.SymptomId);
+            var symptomIds = _diseaseSymptomService.Query(ds=>diseaseIds.Contains(ds.DiseaseId)).Select(ds=>ds.SymptomId).Distinct();
             var symptoms = _symptomService.Query(s=>symptomIds.Contains(s.Id));
             foreach(var symptom in symptoms)
             {
                 symptom.SymptomDetails = _symptomDetailService.Query(s=>s.SymptomId==symptom.Id);
             }
             return symptoms;
+        }
+
+        public Disease GetDiseaseSymptoms(string diseaseId){
+            var disease = _diseaseService.Get(diseaseId);
+            var symptomIds = _diseaseSymptomService.Query(ds=>ds.DiseaseId==diseaseId).Select(ds=>ds.SymptomId).Distinct();
+            disease.Symptoms = _symptomService.Query(s=>symptomIds.Contains(s.Id));
+            foreach(var symptom in disease.Symptoms)
+            {
+                symptom.SymptomDetails = _symptomDetailService.Query(s=>s.SymptomId==symptom.Id);
+            }
+            return disease;
         }
 
     }

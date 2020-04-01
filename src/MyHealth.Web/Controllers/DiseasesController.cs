@@ -9,9 +9,11 @@ namespace MyHealth.Web.Controllers
     public class DiseasesController : BaseModelController<Disease>
     {
         private readonly CrudService<DiseaseSymptom> _diseaseSymptomService;
+        private readonly QuestionnaireService _questionnaireService;
 
-        public DiseasesController(CrudService<Disease> diseaseService, CrudService<DiseaseSymptom> diseaseSymptomService) : base(diseaseService){
+        public DiseasesController(CrudService<Disease> diseaseService, CrudService<DiseaseSymptom> diseaseSymptomService, QuestionnaireService questionnaireService) : base(diseaseService){
             _diseaseSymptomService = diseaseSymptomService;
+            _questionnaireService = questionnaireService;
         }
 
         [HttpPost]
@@ -34,6 +36,13 @@ namespace MyHealth.Web.Controllers
         [Route("{diseaseId}/symptoms")]
         public ActionResult<DiseaseSymptom> AddSymptoms(string diseaseId){
             var diseaseSymptoms = _diseaseSymptomService.Query(ds=>ds.DiseaseId==diseaseId);
+            return Ok(diseaseSymptoms);
+        }
+
+        [HttpGet]
+        [Route("{diseaseId}/symptoms/details")]
+        public ActionResult<Disease> GetSymptomDetails(string diseaseId){
+            var diseaseSymptoms = _questionnaireService.GetDiseaseSymptoms(diseaseId);
             return Ok(diseaseSymptoms);
         }
 

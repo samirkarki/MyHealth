@@ -7,7 +7,7 @@ namespace MyHealth.Web.Models
     public class Disease : BaseModel
     {
         public string Name { get; set; }
-        public IList<Symptom> Symptoms {get;set;}
+        public IEnumerable<Symptom> Symptoms {get;set;}
         
     }
 }

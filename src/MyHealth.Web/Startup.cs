@@ -38,6 +38,7 @@ namespace MyHealth.Web
 
             services.AddControllersWithViews();
             services.AddSingleton(typeof(CrudService<>));
+            services.AddSingleton<QuestionnaireService>();
 
 
             // added by manoj

@@ -22,5 +22,14 @@ namespace MyHealth.Web.Controllers
             return userInfo;
         }
 
+        [HttpPost]
+        [Route("{userId}")]
+        public ActionResult<UserInfo> Post(string userId)
+        {
+            var userSymptoms = _questionnaireService.GetSymptoms();
+            var userInfo = new UserInfo{Id=userId, Symptoms = userSymptoms};
+            return userInfo;
+        }
+
    }
 }
