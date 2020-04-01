@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using MyHealth.Web.Models;
 using MyHealth.Web.Services;
@@ -23,12 +24,10 @@ namespace MyHealth.Web.Controllers
         }
 
         [HttpPost]
-        [Route("{userId}")]
-        public ActionResult<UserInfo> Post(string userId)
+        public ActionResult<IEnumerable<UserScore>> Post(IList<UserSymptom> userSymptoms)
         {
-            var userSymptoms = _questionnaireService.GetSymptoms();
-            var userInfo = new UserInfo{Id=userId, Symptoms = userSymptoms};
-            return userInfo;
+            var userScores = _questionnaireService.SaveQuestionnaire(userSymptoms);
+            return Ok(userScores);
         }
 
    }

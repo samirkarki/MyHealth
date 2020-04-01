@@ -28,12 +28,17 @@ namespace MyHealth.Web.Services
         private readonly CrudService<Symptom> _symptomService;
         private readonly CrudService<SymptomDetail> _symptomDetailService;
         private readonly CrudService<DiseaseSymptom> _diseaseSymptomService;
+        private readonly CrudService<UserSymptom> _userSymptomService;
+        private readonly CrudService<UserScore> _userScoreService;
+
         public QuestionnaireService(
             IOptions<AppSettings> appSettings,
             CrudService<Disease> diseaseService,
             CrudService<Symptom> symptomService,
             CrudService<SymptomDetail> symptomDetailService,
-             CrudService<DiseaseSymptom> diseaseSymptomService
+             CrudService<DiseaseSymptom> diseaseSymptomService,
+             CrudService<UserSymptom> userSymptomService,
+             CrudService<UserScore> userScoreService
              )
         {
             _appSettings = appSettings.Value;
@@ -41,12 +46,13 @@ namespace MyHealth.Web.Services
             _symptomService = symptomService;
             _symptomDetailService = symptomDetailService;
             _diseaseSymptomService = diseaseSymptomService;
+            _userSymptomService = userSymptomService;
+            _userScoreService = userScoreService;
         }
 
         public IEnumerable<Symptom> GetSymptoms()
         {
-            var activeDiseases = _appSettings.ActiveDiseases.Split(',');
-            var diseaseIds = _diseaseService.Query(d => activeDiseases.Contains(d.Name)).Select(d => d.Id);
+            var diseaseIds = GetActiveDiseases().Select(d => d.Id);
             var symptomIds = _diseaseSymptomService.Query(ds => diseaseIds.Contains(ds.DiseaseId)).Select(ds => ds.SymptomId).Distinct();
             var symptoms = _symptomService.Query(s => symptomIds.Contains(s.Id));
             foreach (var symptom in symptoms)
@@ -54,6 +60,32 @@ namespace MyHealth.Web.Services
                 symptom.SymptomDetails = _symptomDetailService.Query(s => s.SymptomId == symptom.Id);
             }
             return symptoms;
+        }
+
+        private IEnumerable<Disease> GetActiveDiseases()
+        {
+            return _diseaseService.Query(d => d.Selected);
+        }
+
+        public IEnumerable<UserScore> SaveQuestionnaire(IList<UserSymptom> userSymptoms){
+            _userSymptomService.CreateMany(userSymptoms);
+            var userScores = new List<UserScore>();
+            foreach(var disease in GetActiveDiseases()){
+                var userScore = new UserScore();
+                var diseaseSymptoms = _diseaseSymptomService.Query(ds => ds.DiseaseId==disease.Id);
+                foreach(var diseaseSymptom in diseaseSymptoms){
+                    var selectedSymptomDetail = userSymptoms.FirstOrDefault(us=>us.SymptomDetailId==diseaseSymptom.SymptomDetailId && us.Selected);
+                    if(selectedSymptomDetail !=null){
+                        userScore.TotalScore+=userScore.TotalScore;
+                        if(diseaseSymptom.IsMajorSymptom){
+                            userScore.MajorScore+=userScore.MajorScore;
+                        }
+                    }
+                }
+                userScores.Add(userScore);
+            }
+            _userScoreService.CreateMany(userScores);
+            return userScores;
         }
 
         public Disease GetDiseaseSymptoms(string diseaseId)
