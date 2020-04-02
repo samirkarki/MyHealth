@@ -172,6 +172,6 @@ const SymptomsDetailForm = props => {
       )}
     </div>
   );
-};
+}; 
 
 export default SymptomsDetailForm;
