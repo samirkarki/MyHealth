@@ -1,0 +1,25 @@
+.list-check {
+    padding-left: 0;
+    list-style: none;
+}
+
+
+.list-check > li::before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: 12px;
+    color: #00b517;
+    position: absolute;
+    top: 2px;
+    left: 0;
+    content: "\f00c";
+}
+
+[class*="list-"] li:after {
+    visibility: hidden;
+    display: block;
+    content: "";
+    overflow: hidden;
+    height: 0;
+    clear: both;
+}

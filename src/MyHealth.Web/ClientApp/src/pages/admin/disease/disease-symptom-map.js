@@ -16,6 +16,10 @@ const DiseaseSymptomMap = props => {
     async function fetchData() {
       let data = await getdiseasesymptoms(currentDisease.id);
       await setSymptomsList(data.symptoms);
+
+      if (data.symptoms.length === 0) {
+        setInitAdd(true);
+      }
     }
     fetchData();
   }, []);

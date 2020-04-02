@@ -93,7 +93,6 @@ const DiseaseForm = () => {
   // pagination
   let currentDataItems = [];
   if (tableData.diseaseInfo) {
-    console.log(tableData.diseaseInfo);
     currentDataItems = getCurrentPaginatedItems(
       currentPage,
       itemsPerPage,
