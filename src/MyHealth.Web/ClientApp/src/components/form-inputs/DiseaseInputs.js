@@ -13,6 +13,7 @@ const DiseaseInputs = ({ idx, diseaseState, handleDiseaseChange, required }) => 
                 name={diseaseNameId}
                 data-idx={idx}
                 id={diseaseNameId}
+                key={diseaseNameId}
                 className="name form-control"
                 value={diseaseState[idx].name}
                 onChange={handleDiseaseChange}
@@ -23,6 +24,7 @@ const DiseaseInputs = ({ idx, diseaseState, handleDiseaseChange, required }) => 
                         name={diseaseNameId}
                         data-idx={idx}
                         id={diseaseNameId}
+                        key={diseaseNameId}
                         className="name form-control"
                         value={diseaseState[idx].name}
                         onChange={handleDiseaseChange}

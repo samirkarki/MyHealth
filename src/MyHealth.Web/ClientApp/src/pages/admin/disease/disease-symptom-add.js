@@ -33,7 +33,7 @@ const DiseaseSymptomAdd = props => {
       </div>
 
       <span className="font-weight-bold mt-lg-5">Add Symptoms</span>
-      <table class="table table-striped mt-lg-1">
+      <table className="table table-striped mt-lg-1">
         <thead>
           <tr className="row col-12">
             <th className="col-2"></th>
@@ -55,7 +55,7 @@ const DiseaseSymptomAdd = props => {
           ) : (
             <tr>
               <td colSpan="3">
-                <div class="alert alert-secondary border-0">
+                <div className="alert alert-secondary border-0">
                   No symptoms found!!
                 </div>
               </td>

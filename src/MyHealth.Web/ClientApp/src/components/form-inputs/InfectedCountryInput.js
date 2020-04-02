@@ -16,6 +16,7 @@ const InfectedCountryInput = ({ idx, infectedCountryState, handleInfectedCountry
                     data-idx={idx}
                     id={countryNameId}
                     className="name form-control"
+                    key={countryNameId}
                     value={infectedCountryState[idx].name}
                     onChange={handleInfectedCountryChange}
                     required
@@ -25,6 +26,7 @@ const InfectedCountryInput = ({ idx, infectedCountryState, handleInfectedCountry
                         name={countryNameId}
                         data-idx={idx}
                         id={countryNameId}
+                        key={countryNameId}
                         className="name form-control"
                         value={infectedCountryState[idx].name}
                         onChange={handleInfectedCountryChange}

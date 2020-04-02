@@ -14,6 +14,7 @@ const CatInputs = ({ idx, catState, handleCatChange }) => {
                 name={catId}
                 data-idx={idx}
                 id={catId}
+                key={catId}
                 className="name"
                 value={catState[idx].name}
                 onChange={handleCatChange}
@@ -23,6 +24,7 @@ const CatInputs = ({ idx, catState, handleCatChange }) => {
                 type="text"
                 name={ageId}
                 data-idx={idx}
+                key={catId}
                 id={ageId}
                 className="age"
                 value={catState[idx].age}

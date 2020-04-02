@@ -149,7 +149,8 @@ const DiseaseForm = () => {
                       inputState={diseaseState}
                       handleChange={handleDiseaseChange}
                       required={true}
-                      title="disease"
+                      title={`disease #${idx + 1}`}
+                      value={val.name}
                     />
                   ))}
                 </Fragment>
