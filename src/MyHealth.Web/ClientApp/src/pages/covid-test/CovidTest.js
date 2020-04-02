@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import UserRiskForm from '../../components/risk-form/user-risk-form';
+import Form from '../../components/Form'
 
 const CovidTest = () => {
     return (
@@ -13,6 +14,9 @@ const CovidTest = () => {
                     </p>
                 </div>
                 <UserRiskForm />
+
+
+                {/* <Form/> */}
             </div>
         </Fragment>
     )

@@ -21,6 +21,19 @@ export const decodedToken = () =>  {
 }
 
 
+export const getUserIdFromToken = () => {
+    try {
+        const token = localStorage.getItem('token');
+        let decodedToken = jwtDecoder(token);
+        return {
+            userId: decodedToken.sub
+        };
+    }catch(error){
+        throw error;
+    }
+}
+
+
 // Setup config with token - helper function
 export const tokenConfig = getState => {
     // Get token from state

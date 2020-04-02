@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getLeads, deleteLead, addLead } from '../store/actions/leadsAction';
 import Checkbox from './checkbox/Checkbox';
 import RadioButton from './radio/RadioButton';
 
@@ -14,17 +13,15 @@ const Form = () => {
     const [checked, setChecked] = useState(false);
 
     const dispatch = useDispatch();
-    const leads = useSelector(state => state.leadReducer.leads);
 
     useEffect(() => {
-        dispatch(getLeads());
+        //dispatch(getLeads());
     }, [])
 
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
         const lead = { name, email, message };
-        dispatch(addLead(lead))
         clearForm();
     }
 
@@ -86,9 +83,6 @@ const Form = () => {
 }
 
 
-Form.propTypes = {
-    addLead: PropTypes.func
-}
 
 
 export default Form;
