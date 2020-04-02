@@ -78,6 +78,7 @@ namespace MyHealth.Web.Services
                     if(selectedSymptomDetail !=null){
                         userScore.TotalScore+=userScore.TotalScore;
                         if(diseaseSymptom.IsMajorSymptom){
+                            userScore.MajorSymptomCount += 1;
                             userScore.MajorScore+=userScore.MajorScore;
                         }
                     }
