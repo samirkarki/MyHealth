@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from "react";
 
-import { getDiseaseSymptomsToAdd } from "../../../store/actions/diseaseActions";
+import {
+  getDiseaseSymptomsToAdd,
+  saveDiseaseSymptoms
+} from "../../../store/actions/diseaseActions";
 import SymptomDetailForm from "./symptom-detail";
 
 const DiseaseSymptomAdd = props => {
-  const { currentDisease, backToSymptomList } = props;
+  const { currentDisease, backToSymptomList, currentSymptom, setInitAdd, loadData, setCurrentSymptom } = props;
   const [symptomsListAdd, setSymptomsListAdd] = useState([]);
   const blankSymptoms = { id: "", checked: false, detailData: [] };
   const [selectedSymptoms, setSelectedSymptoms] = useState([blankSymptoms]);
 
   useEffect(() => {
     async function fetchData() {
-      let data = await getDiseaseSymptomsToAdd(currentDisease.id);
+      let symptomID = "";
+      if (currentSymptom !== null) symptomID = currentSymptom.id;
+
+      let data = await getDiseaseSymptomsToAdd(currentDisease.id, symptomID);
       if (data != null) {
         data.symptoms.forEach(symptom => {
           symptom.selected = false;
+          if (symptom.id === symptomID) symptom.selected = true;
           symptom.symptomDetails.forEach(detail => {
-            detail.occurance = 0;
+            detail.occurance = detail.score;
           });
         });
 
@@ -34,13 +41,44 @@ const DiseaseSymptomAdd = props => {
     items[0].selected = !items[0].selected;
     items[0].symptomDetails.forEach(detail => {
       detail.occurance = 0;
+      detail.score = 0;
     });
 
     await setSymptomsListAdd(symptoms);
   };
 
-  const saveClicked = () => {
-    console.log(symptomsListAdd);
+  const saveClicked = async () => {
+    const items = symptomsListAdd.filter(item => item.selected === true);
+
+    let symptomsData = [];
+
+    items.forEach(element => {
+      // symptomsData.id = element.id;
+
+      let symptomDetails = [];
+      element.symptomDetails.forEach(detail => {
+        symptomsData.push({
+          DiseaseId: currentDisease.id,
+          SymptomId: element.id,
+          SymptomDetailId: detail.id,
+          Score: parseFloat(detail.occurance)
+        });
+      });
+
+      //symptomsData.push({ symptomDetails });
+    });
+
+    let dataObj = JSON.stringify(symptomsData);
+
+    let result = await saveDiseaseSymptoms(currentDisease.id, dataObj);
+
+    if (result) {
+      setInitAdd(false);
+      if (currentSymptom) setCurrentSymptom(null);
+      if (loadData) loadData();
+    }
+
+
   };
 
   return (
@@ -78,9 +116,10 @@ const DiseaseSymptomAdd = props => {
                         <input
                           className="custom-control-input"
                           type="checkbox"
+                          checked={symptoms.selected}
                           key={`chk-${symptoms.id}`}
                           id={`chk-${symptoms.id}`}
-                          onClick={updateCheckData.bind(this, symptoms)}
+                          onChange={updateCheckData.bind(this, symptoms)}
                         />
                         <label
                           className="custom-control-label"
@@ -94,13 +133,17 @@ const DiseaseSymptomAdd = props => {
                             <ul className="col-12 list-group list-group-flush">
                               <li className="list-group-item ">
                                 <div className="col-12 d-flex">
-                                  <span className="col-4 font-weight-bold">Symptom Detail</span>
-                                  <span className="col-8 font-weight-bold">Occurance</span>
+                                  <span className="col-4 font-weight-bold">
+                                    Symptom Detail
+                                  </span>
+                                  <span className="col-8 font-weight-bold">
+                                    Occurance
+                                  </span>
                                 </div>
                               </li>
                               {symptoms.symptomDetails.map((detail, index) => {
                                 return (
-                                  <li className="list-group-item">
+                                  <li className="list-group-item" key={index}>
                                     <SymptomDetailForm detail={detail} />{" "}
                                   </li>
                                 );

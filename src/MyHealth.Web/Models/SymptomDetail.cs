@@ -8,6 +8,6 @@ namespace MyHealth.Web.Models
         public string SymptomId { get; set; }
         public string Description { get; set; }
         public string Remarks { get; set; }
-        
+        public decimal Score { get; set; }
     }
 }

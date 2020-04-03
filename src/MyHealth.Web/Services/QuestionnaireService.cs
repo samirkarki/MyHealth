@@ -67,19 +67,24 @@ namespace MyHealth.Web.Services
             return _diseaseService.Query(d => d.Selected);
         }
 
-        public IEnumerable<UserScore> SaveQuestionnaire(IList<UserSymptom> userSymptoms){
+        public IEnumerable<UserScore> SaveQuestionnaire(IList<UserSymptom> userSymptoms)
+        {
             _userSymptomService.CreateMany(userSymptoms);
             var userScores = new List<UserScore>();
-            foreach(var disease in GetActiveDiseases()){
+            foreach (var disease in GetActiveDiseases())
+            {
                 var userScore = new UserScore();
-                var diseaseSymptoms = _diseaseSymptomService.Query(ds => ds.DiseaseId==disease.Id);
-                foreach(var diseaseSymptom in diseaseSymptoms){
-                    var selectedSymptomDetail = userSymptoms.FirstOrDefault(us=>us.SymptomDetailId==diseaseSymptom.SymptomDetailId && us.Selected);
-                    if(selectedSymptomDetail !=null){
-                        userScore.TotalScore+=userScore.TotalScore;
-                        if(diseaseSymptom.IsMajorSymptom){
+                var diseaseSymptoms = _diseaseSymptomService.Query(ds => ds.DiseaseId == disease.Id);
+                foreach (var diseaseSymptom in diseaseSymptoms)
+                {
+                    var selectedSymptomDetail = userSymptoms.FirstOrDefault(us => us.SymptomDetailId == diseaseSymptom.SymptomDetailId && us.Selected);
+                    if (selectedSymptomDetail != null)
+                    {
+                        userScore.TotalScore += userScore.TotalScore;
+                        if (diseaseSymptom.IsMajorSymptom)
+                        {
                             userScore.MajorSymptomCount += 1;
-                            userScore.MajorScore+=userScore.MajorScore;
+                            userScore.MajorScore += userScore.MajorScore;
                         }
                     }
                 }
@@ -101,15 +106,43 @@ namespace MyHealth.Web.Services
             return disease;
         }
 
-        public Disease GetDiseaseSymptomsToAdd(string diseaseId)
+        public Disease GetDiseaseSymptomsToAdd(string diseaseId, string symptomID)
         {
             var disease = _diseaseService.Get(diseaseId);
-            var symptomIds = _diseaseSymptomService.Query(ds => ds.DiseaseId == diseaseId).Select(ds => ds.SymptomId).Distinct();
-            disease.Symptoms = _symptomService.Query(s => !symptomIds.Contains(s.Id));
+            var symptomIds = new List<string>();
+            if (symptomID.Length == 0)
+            {
+                symptomIds = _diseaseSymptomService.Query(ds => ds.DiseaseId == diseaseId).Select(ds => ds.SymptomId).Distinct().ToList();
+                disease.Symptoms = _symptomService.Query(s => !symptomIds.Contains(s.Id));
+            }
+            else
+            {
+                symptomIds = _diseaseSymptomService.Query(ds => ds.DiseaseId == diseaseId && ds.SymptomId == symptomID).Select(ds => ds.SymptomId).Distinct().ToList();
+                disease.Symptoms = _symptomService.Query(s => symptomIds.Contains(s.Id));
+            }
             foreach (var symptom in disease.Symptoms)
             {
-                symptom.SymptomDetails = _symptomDetailService.Query(s => s.SymptomId == symptom.Id);
+                if (symptomID.Length == 0)
+                    symptom.SymptomDetails = _symptomDetailService.Query(s => s.SymptomId == symptom.Id);
+                else
+                    symptom.SymptomDetails = _symptomDetailService.Query(s => s.SymptomId == symptomID);
+
+
+                foreach (SymptomDetail detail in symptom.SymptomDetails)
+                {
+                    var symp = _diseaseSymptomService.Query(ds => ds.DiseaseId == diseaseId && ds.SymptomId == symptomID && ds.SymptomDetailId == detail.Id).ToList();
+                    if (symp.Count > 0)
+                    {
+                        detail.Score = symp[0].Score;
+                    }
+                    
+                   
+                }
             }
+
+
+           
+
             return disease;
         }
 

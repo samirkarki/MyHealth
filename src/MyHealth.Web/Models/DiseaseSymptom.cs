@@ -12,4 +12,5 @@ namespace MyHealth.Web.Models
         public bool IsMajorSymptom {get;set;}
         
     }
+
 }

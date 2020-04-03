@@ -112,14 +112,53 @@ export const getdiseasesymptoms = async id => {
 };
 
 //getDiseaseSymptomsToAdd
-export const getDiseaseSymptomsToAdd = async id => {
+export const getDiseaseSymptomsToAdd = async (id, symptomID) => {
   let symptoms = [];
   let config = tokenConfig();
-  symptoms = await axios.get(`/api/diseases/${id}/symptoms/add`, config);
+  let obj = JSON.stringify({ SymptomId: symptomID });
+  symptoms = await axios.post(`/api/diseases/${id}/symptoms/add`, obj, config);
   if (symptoms.status === 200) {
     return symptoms.data;
   } else {
     notifyError("Cannot get symptoms. Please try again.");
     return null;
+  }
+};
+
+export const saveDiseaseSymptoms = async (id, diseaseInfo) => {
+  let config = tokenConfig();
+
+  let result = await axios.post(
+    `/api/diseases/${id}/symptoms`,
+    diseaseInfo,
+    config
+  );
+
+  if (result.status === 200) {
+    let response = result.data;
+    notifySuccess(response.data);
+    return response.status;
+  } else {
+    notifyError("Cannot update details. Please try again.");
+    return false;
+  }
+};
+
+export const deleteSymptomDetails = async (id, symptomID) => {
+  let config = tokenConfig();
+  let obj = JSON.stringify({ SymptomId: symptomID });
+  let result = await axios.post(
+    `/api/diseases/${id}/symptoms/details`,
+    obj,
+    config
+  );
+
+  if (result.status === 200) {
+    let response = result.data;
+    notifySuccess(response.data);
+    return response.status;
+  } else {
+    notifyError("Cannot delete details. Please try again.");
+    return false;
   }
 };

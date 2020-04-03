@@ -3,7 +3,7 @@ import DiseaseSymptomAdd from "./disease-symptom-add";
 
 import {
   getdiseasesymptoms,
-  getDiseaseSymptomsToAdd
+  deleteSymptomDetails
 } from "../../../store/actions/diseaseActions";
 import { useDispatch } from "react-redux";
 
@@ -11,24 +11,46 @@ const DiseaseSymptomMap = props => {
   const { currentDisease, backToList } = props;
   const [symptomsList, setSymptomsList] = useState([]);
   const [initAdd, setInitAdd] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [currentSymptom, setCurrentSymptom] = useState(null);
 
   useEffect(() => {
-    async function fetchData() {
-      let data = await getdiseasesymptoms(currentDisease.id);
-      await setSymptomsList(data.symptoms);
-
-      if (data.symptoms.length === 0) {
-        setInitAdd(true);
-      }
-    }
     fetchData();
   }, []);
 
+  async function fetchData() {
+    let data = await getdiseasesymptoms(currentDisease.id);
+    await setSymptomsList(data.symptoms);
+
+    if (data.symptoms.length === 0) {
+      setInitAdd(true);
+    }
+  }
+
   const backToSymptomList = () => {
     setInitAdd(false);
+    setCurrentSymptom(null);
   };
   const handleAddClick = () => {
     setInitAdd(true);
+  };
+
+  const editSymptomDetails = detail => {
+    setCurrentSymptom(detail);
+    setInitAdd(true);
+  };
+
+  const deleteSymptomDetail = id => {
+    if (window.confirm("Are you sure to delete ?")) {
+      deleteDetail(id);
+    }
+  };
+
+  const deleteDetail = async id => {
+    let data = await deleteSymptomDetails(currentDisease.id, id);
+    if (data) {
+      fetchData();
+    }
   };
 
   return (
@@ -37,6 +59,10 @@ const DiseaseSymptomMap = props => {
         <DiseaseSymptomAdd
           currentDisease={currentDisease}
           backToSymptomList={backToSymptomList}
+          currentSymptom={currentSymptom}
+          setCurrentSymptom={setCurrentSymptom}
+          setInitAdd={setInitAdd}
+          loadData={fetchData}
         />
       ) : (
         <div className="row no-gutters">
@@ -49,7 +75,7 @@ const DiseaseSymptomMap = props => {
               <span className="btn btn-secondary mr-lg-3" onClick={backToList}>
                 Back to List
               </span>
-              <span className="btn btn-info" onClick={handleAddClick}>
+              <span className="btn btn-primary" onClick={handleAddClick}>
                 + Add
               </span>
             </div>
@@ -67,9 +93,30 @@ const DiseaseSymptomMap = props => {
             </thead>
             <tbody>
               {symptomsList.length > 0 ? (
-                <span className="comming-soon font-weight-bold">
-                  --- Coming soon ---
-                </span>
+                symptomsList.map((detail, index) => {
+                  return (
+                    <tr className="row col-12" key={index}>
+                      <td className="col-1">{index + 1}</td>
+                      <td className="col-8">{detail.name}</td>
+                      <td className="col-3 ">
+                        <div className="row no-gutters float-left">
+                          <span
+                            className="btn btn-sm btn-secondary"
+                            onClick={editSymptomDetails.bind(this, detail)}
+                          >
+                            Edit
+                          </span>
+                          <span
+                            className="btn btn-sm btn-primary ml-lg-2"
+                            onClick={deleteSymptomDetail.bind(this, detail.id)}
+                          >
+                            Delete
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr className="row col-12">
                   <td colSpan="3">
