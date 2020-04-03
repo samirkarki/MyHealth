@@ -4,7 +4,7 @@ SAVE_QUESTIONS_ERROR, SAVE_QUESTIONS_SUCCESS, SAVE_QUESTIONS_START } from '../ac
 const initialState = {
     isLoading: false,
     questions: null,
-    submission: null
+    responseScore: null
 }
 
 export default function (state = initialState, action) {
@@ -16,7 +16,7 @@ export default function (state = initialState, action) {
                 isLoading: true
             }
         }
-        case SAVE_QUESTIONS_SUCCESS:
+
         case LOAD_QUESTIONS_SUCCESS: {
             return {
                 ...state,
@@ -24,6 +24,15 @@ export default function (state = initialState, action) {
                 questions: action.payload
             }
         }
+
+        case SAVE_QUESTIONS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                responseScore: action.payload
+            }
+        }
+
         case LOAD_QUESTIONS_ERROR:
         case SAVE_QUESTIONS_ERROR: {
             return {

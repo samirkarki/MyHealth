@@ -62,9 +62,7 @@ class UserRiskForm extends Component {
             questionaaire: [],
             age: '',
             gender: '',
-            contacted_victims: '',
-            contact_num: '',
-            current_status: ''
+            contact_num: ''
         }
     }
 
@@ -77,7 +75,7 @@ class UserRiskForm extends Component {
                 symptoms.forEach(itemdetail => {
                     if (itemdetail.symptomDetails) {
                         itemdetail.symptomDetails.forEach(item => {
-                            addKeyValue(item, 'isChecked', false)
+                            addKeyValue(item, 'selected', false)
                         })
                     }
                 })
@@ -98,13 +96,17 @@ class UserRiskForm extends Component {
 
         questions.forEach(itemdetail => {
             itemdetail.symptomDetails.forEach(item => {
-                if (item.id == event.target.name)
-                    item.isChecked = event.target.checked
+                if(item.symptomId == event.target.name) 
+                    item.selected = false
+                if (item.id == event.target.value)
+                    item.selected = event.target.checked
             })
         })
 
         this.setState({
             questionaaire: questions
+        },()=>{
+            console.log('questiona change', this.state)
         })
     }
 
@@ -122,22 +124,46 @@ class UserRiskForm extends Component {
     }
 
 
-    setContactedVictims = (evt) => {
+    setContactNumber = (evt) => {
         this.setState({
-            contacted_victims: evt.target.value
+            contact_num: evt.target.value
         })
     }
 
-    setCurrentStatus = (evt) => {
-        this.setState({
-            current_status: evt.target.value
+
+    saveResponse = (evt) => {
+        const user = getUserIdFromToken();
+        const { age, contact_num, gender  } = this.state;
+        const selected_symptoms = [...this.state.questionaaire]
+        const checkedSymptoms = []
+        selected_symptoms.forEach(itemdetail => {
+            itemdetail.symptomDetails.forEach(item => {     
+                if(item.selected == true){
+                    var obj = {
+                        userId: user.userId,
+                        symptomId: item.symptomId.toString(),
+                        symptomDetailId: item.id.toString(),
+                        selected: item.selected,
+                        id: item.id.toString()
+                    }
+                    checkedSymptoms.push(obj)
+                }
+            })
         })
+
+        var obj = {
+            userId: user.userId,
+            age : parseInt(age),
+            contactNumber: contact_num,
+            gender: gender,
+            userSymptoms: checkedSymptoms
+        }
+
+        this.props.saveUserResponse(obj)
     }
 
 
     render() {
-
-        { console.log('render function', this.state) }
         return (
             <div className="form">
 
@@ -148,6 +174,12 @@ class UserRiskForm extends Component {
                     </fieldset>
                 </div>
 
+                <div className="form-group">
+                    <fieldset>
+                        <label className="control-label"><strong>तपाइको उमेर :</strong></label>
+                        <input className="form-control" name="contact_number" type="text" placeholder="Phone Number :" onChange={this.setContactNumber} />
+                    </fieldset>
+                </div>
 
                 <div className="form-group">
                     <fieldset>
@@ -165,12 +197,13 @@ class UserRiskForm extends Component {
 
 
                 <label><strong>तपाइ ले निम्न लिखित कुन कुन लक्ष्यनहरु अनुभब गर्नु भएको छ   :</strong></label><br />
-                <Fragment style={{marginLeft: '25px'}}>
                 {
                     this.state.questionaaire.length > 0 ? <QuestionComponent data={this.state.questionaaire} onChange={this.handleChange} /> : <div>Loading...</div>
                 }
-                </Fragment>
-                <div className="form-group">
+
+                <button type="button" className="btn btn-primary" onClick={this.saveResponse}>Submit</button>
+
+                {/* <div className="form-group">
                     <fieldset>
                         <label><strong>कोरोना सन्क्रमित सङग सम्पर्क भएको छ कि छैन ?</strong></label><br />
                         <label>
@@ -180,7 +213,7 @@ class UserRiskForm extends Component {
                             </div>
                         </label>
                     </fieldset>
-                </div>
+                </div> */}
 
 
                 {/* <div className="form-group">
@@ -224,7 +257,7 @@ class UserRiskForm extends Component {
                     </fieldset>
                 </div> */}
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <fieldset>
                         <label><strong>हाल कहाँ हुनुहुनछ ?</strong></label><br />
                         <label>
@@ -234,9 +267,8 @@ class UserRiskForm extends Component {
                             </div>
                         </label>
                     </fieldset>
-                </div>
+                </div> */}
 
-                <button type="button" className="btn btn-primary">Submit</button>
             </div>
         )
     }

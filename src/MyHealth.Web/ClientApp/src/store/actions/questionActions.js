@@ -71,7 +71,7 @@ export const load = () => dispatch => {
             questionaaire.symptoms.forEach(itemdetail => {
                 if (itemdetail.symptomDetails) {
                     itemdetail.symptomDetails.forEach(item => {
-                        addKeyValue(item, 'isChecked', false)
+                        addKeyValue(item, 'selected', false)
                     })
                 }
             })
@@ -93,6 +93,8 @@ export const load = () => dispatch => {
 export const saveUserResponse = (item) => dispatch => {
 
     dispatch({ type: SAVE_QUESTIONS_START })
+
+    const obj = JSON.stringify(item);
 
     const config = tokenConfig();
 

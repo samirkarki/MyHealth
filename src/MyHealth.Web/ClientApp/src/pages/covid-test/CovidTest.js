@@ -14,9 +14,6 @@ const CovidTest = () => {
                     </p>
                 </div>
                 <UserRiskForm />
-
-
-                {/* <Form/> */}
             </div>
         </Fragment>
     )
