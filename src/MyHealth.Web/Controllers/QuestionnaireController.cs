@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyHealth.Web.Models;
 using MyHealth.Web.Services;
 
 namespace MyHealth.Web.Controllers
 {
+    [Authorize]
     public class QuestionnaireController: MyHealthController
     {
         private readonly QuestionnaireService _questionnaireService;
@@ -24,9 +26,9 @@ namespace MyHealth.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult<IEnumerable<UserScore>> Post(IList<UserSymptom> userSymptoms)
+        public ActionResult<IEnumerable<UserScore>> Post(Questionnaire questionnaire)
         {
-            var userScores = _questionnaireService.SaveQuestionnaire(userSymptoms);
+            var userScores = _questionnaireService.SaveQuestionnaire(questionnaire);
             return Ok(userScores);
         }
 

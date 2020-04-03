@@ -18,6 +18,7 @@ import AdminManagement from './pages/admin/management';
 import Profile from './pages/profile/Profile';
 import CovidTest from './pages/covid-test/CovidTest';
 import AdminRoutes from './components/common/AdminRoutes';
+import Result from './pages/result';
 
 class App extends Component {
 
@@ -37,6 +38,7 @@ class App extends Component {
                                     <Route exact path="/" component={Home} />
                                     <Route exact path="/register" component={Register} />
                                     <Route exact path="/login" component={Login} />
+                                    <Route exact path="/result" component={Result} />
                                     <PrivateRoutes path="/user-profile" component={Profile} />
                                     <PrivateRoutes path="/test-covid" component={CovidTest} />
                                     <PrivateRoutes path="/admin/management" component={AdminManagement} />

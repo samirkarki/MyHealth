@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types';
 
 const CheckboxContainer = styled.div`
   display: inline-block;
@@ -44,15 +45,23 @@ const StyledCheckbox = styled.div`
   }
 `
 
-const Checkbox = ({ className, checked, ...props }) => (
+const Checkbox = ({ className, checked, onChange, ...props }) => (
   <CheckboxContainer className={className}>
-    <HiddenCheckbox checked={checked} {...props} />
-    <StyledCheckbox checked={checked}>
+    <HiddenCheckbox checked={checked} onChange={onChange} {...props}/>
+    <StyledCheckbox checked={checked} {...props}>
       <Icon viewBox="0 0 24 30">
         <polyline points="20 6 9 17 4 12" />
       </Icon>
     </StyledCheckbox>
   </CheckboxContainer>
 )
+
+
+
+Checkbox.propTypes = {
+  checked: PropTypes.bool
+}
+
+
 
 export default Checkbox;
