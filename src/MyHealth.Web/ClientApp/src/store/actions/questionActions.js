@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import {
     LOAD_QUESTIONS_START, LOAD_QUESTIONS_SUCCESS, LOAD_QUESTIONS_ERROR,
-    SAVE_QUESTIONS_ERROR, SAVE_QUESTIONS_SUCCESS, SAVE_QUESTIONS_START
+    SAVE_QUESTIONS_ERROR, SAVE_QUESTIONS_SUCCESS, SAVE_QUESTIONS_START,LOAD_QUESTIONS_INITIAL_STATE
 } from './types';
 
 import { notifyError, notifySuccess } from '../../components/toast/toast';
@@ -53,6 +53,13 @@ const questionaaire = {
             ],
         }
     ]
+}
+
+
+
+export const initialStateLoad = () => dispatch => {
+
+    dispatch({ type: LOAD_QUESTIONS_INITIAL_STATE })
 }
 
 

@@ -38,10 +38,13 @@ const Header = () => {
                     <Link to="/test-covid" className="nav-link">Test Yourself</Link>
                 </li>
                 <li className="nav-item">
+                    <Link to="/result" className="nav-link">Result</Link>
+                </li>
+                <li className="nav-item">
                     <Link to="/user-profile" className="nav-link">Profile</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/admin/management" className="nav-link">admin</Link>
+                    <Link to="/admin/management" className="nav-link">Admin</Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/" onClick={() => dispatch(logout())} className="nav-link">Logout</Link>

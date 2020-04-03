@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import { addKeyValue } from '../../utils/json-helper';
 import RadioButton from '../../components/radio/RadioButton';
 import Checkbox from '../../components/checkbox/Checkbox';
-import { saveUserResponse, load } from '../../store/actions/questionActions';
+import { saveUserResponse, initialStateLoad } from '../../store/actions/questionActions';
 import QuestionComponent from './../../pages/covid-test/QuestionComponent';
 
 import { tokenConfig, getUserIdFromToken } from '../../utils/tokenUtility';
 import axios from 'axios';
 import { notifyError } from '../../components/toast/toast'
+import { Redirect } from 'react-router-dom';
 
 
 const symptoms = [
@@ -67,6 +68,7 @@ class UserRiskForm extends Component {
     }
 
     componentDidMount() {
+
         const config = tokenConfig();
         const userid = getUserIdFromToken();
 
@@ -164,6 +166,12 @@ class UserRiskForm extends Component {
 
 
     render() {
+
+        {console.log(this.props.questions_state)}
+        if(this.props.questions_state.responseScore) {
+            return <Redirect to='/result' />
+        }
+
         return (
             <div className="form">
 
@@ -279,13 +287,13 @@ class UserRiskForm extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        questions_state: state.questionReducer.questions
+        questions_state: state.questionReducer
     };
 }
 
 const mapDispatchToProps = {
     saveUserResponse,
-    load
+    initialStateLoad
 }
 
 export default connect(

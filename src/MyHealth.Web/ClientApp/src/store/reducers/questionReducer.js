@@ -1,5 +1,5 @@
 import { LOAD_QUESTIONS_START, LOAD_QUESTIONS_SUCCESS, LOAD_QUESTIONS_ERROR,
-SAVE_QUESTIONS_ERROR, SAVE_QUESTIONS_SUCCESS, SAVE_QUESTIONS_START } from '../actions/types';
+SAVE_QUESTIONS_ERROR, SAVE_QUESTIONS_SUCCESS, SAVE_QUESTIONS_START, LOAD_QUESTIONS_INITIAL_STATE } from '../actions/types';
 
 const initialState = {
     isLoading: false,
@@ -30,6 +30,13 @@ export default function (state = initialState, action) {
                 ...state,
                 isLoading: false,
                 responseScore: action.payload
+            }
+        }
+
+        case LOAD_QUESTIONS_INITIAL_STATE:{
+            return {
+                ...state,
+                isLoading: false
             }
         }
 
