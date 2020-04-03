@@ -10,7 +10,6 @@ namespace MyHealth.Web.Controllers
     [Authorize]
     public class SymptomsController : BaseModelController<Symptom>
     {
-        private readonly CrudService<DiseaseSymptom> _diseaseSymptomService;
         private readonly CrudService<SymptomDetail> _symptomDetailService;
         public SymptomsController(CrudService<Symptom> symptomService, CrudService<SymptomDetail> symptomDetailService) : base(symptomService)
         {

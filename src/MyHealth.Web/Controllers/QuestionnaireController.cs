@@ -26,9 +26,9 @@ namespace MyHealth.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult<IEnumerable<UserScore>> Post(IList<UserSymptom> userSymptoms)
+        public ActionResult<IEnumerable<UserScore>> Post(Questionnaire questionnaire)
         {
-            var userScores = _questionnaireService.SaveQuestionnaire(userSymptoms);
+            var userScores = _questionnaireService.SaveQuestionnaire(questionnaire);
             return Ok(userScores);
         }
 

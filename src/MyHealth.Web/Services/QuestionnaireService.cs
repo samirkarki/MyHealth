@@ -31,8 +31,11 @@ namespace MyHealth.Web.Services
         private readonly CrudService<UserSymptom> _userSymptomService;
         private readonly CrudService<UserScore> _userScoreService;
 
+        public CrudService<UserInfo> _userInfoService;
+
         public QuestionnaireService(
             IOptions<AppSettings> appSettings,
+            CrudService<UserInfo> userInfoService,
             CrudService<Disease> diseaseService,
             CrudService<Symptom> symptomService,
             CrudService<SymptomDetail> symptomDetailService,
@@ -42,6 +45,7 @@ namespace MyHealth.Web.Services
              )
         {
             _appSettings = appSettings.Value;
+            _userInfoService = userInfoService;
             _diseaseService = diseaseService;
             _symptomService = symptomService;
             _symptomDetailService = symptomDetailService;
@@ -67,14 +71,19 @@ namespace MyHealth.Web.Services
             return _diseaseService.Query(d => d.Selected);
         }
 
-        public IEnumerable<UserScore> SaveQuestionnaire(IList<UserSymptom> userSymptoms){
-            _userSymptomService.CreateMany(userSymptoms);
+        public IEnumerable<UserScore> SaveQuestionnaire(Questionnaire questionnaire){
+            var user = _userInfoService.Get(questionnaire.UserId);
+            user.Age=questionnaire.Age;
+            user.ContactNumber = questionnaire.ContactNumber;
+            _userInfoService.Update(user.Id, user);
+
+            _userSymptomService.CreateMany(questionnaire.UserSymptoms);
             var userScores = new List<UserScore>();
             foreach(var disease in GetActiveDiseases()){
                 var userScore = new UserScore();
                 var diseaseSymptoms = _diseaseSymptomService.Query(ds => ds.DiseaseId==disease.Id);
                 foreach(var diseaseSymptom in diseaseSymptoms){
-                    var selectedSymptomDetail = userSymptoms.FirstOrDefault(us=>us.SymptomDetailId==diseaseSymptom.SymptomDetailId && us.Selected);
+                    var selectedSymptomDetail = questionnaire.UserSymptoms.FirstOrDefault(us=>us.SymptomDetailId==diseaseSymptom.SymptomDetailId && us.Selected);
                     if(selectedSymptomDetail !=null){
                         userScore.TotalScore+=userScore.TotalScore;
                         if(diseaseSymptom.IsMajorSymptom){
