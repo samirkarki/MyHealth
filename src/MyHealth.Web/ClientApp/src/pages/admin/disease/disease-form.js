@@ -26,6 +26,7 @@ const DiseaseForm = () => {
 
   const tableData = useSelector(state => state.diseaseReducer);
   const [showSymptoms, setShowSymptoms] = useState(false);
+  const [checkedItems, setCheckedItems] = useState({})
 
   useEffect(() => {
     dispatch(load());
@@ -105,6 +106,14 @@ const DiseaseForm = () => {
   };
   // end pagination
 
+
+  const selectDiseaseFunc = (param)=>(e) => {
+    e.preventDefault()
+    const item = param
+    item.selected = !item.selected
+    dispatch(updateItem(item));
+  }
+
   return (
     <div>
       {showSymptoms ? (
@@ -173,6 +182,8 @@ const DiseaseForm = () => {
                 editRow={editRow}
                 delete={deleteDisease}
                 showSymptoms={loadSymptoms}
+                selectDiseaseFn={selectDiseaseFunc}
+                checkedItems={checkedItems}
               />
             </ClientPagination>
           </div>
