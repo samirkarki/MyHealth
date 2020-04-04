@@ -45,7 +45,7 @@ namespace MyHealth.Web.Controllers
             };
             return Ok(result);
 
-            
+
         }
 
         [HttpPut]
@@ -85,14 +85,14 @@ namespace MyHealth.Web.Controllers
         public ActionResult<SymptomDetail> DeleteDetails(string diseaseId, DiseaseSymptom symptom)
         {
 
-            var symptomDetails = _diseaseSymptomService.Query(s => s.DiseaseId == diseaseId && s.SymptomId==symptom.SymptomId).ToList();
+            var symptomDetails = _diseaseSymptomService.Query(s => s.DiseaseId == diseaseId && s.SymptomId == symptom.SymptomId).ToList();
             if (symptomDetails.Count > 0)
             {
                 foreach (var item in symptomDetails)
                 {
                     _diseaseSymptomService.Remove(item);
                 }
-               
+
                 var result = new
                 {
                     Data = "Symptom details deleted successfully.",
@@ -114,8 +114,46 @@ namespace MyHealth.Web.Controllers
 
         }
 
+        [HttpPost]
+        [Route("{diseaseId}/symptoms/setmajor")]
+        public ActionResult<SymptomDetail> SetMajorSymptom(string diseaseId, Symptom symptom)
+        {
+
+            var symptomDetails = _diseaseSymptomService.Query(s => s.DiseaseId == diseaseId).ToList();
+
+            if (symptomDetails.Count > 0)
+            {
+                foreach (var item in symptomDetails)
+                {
+                    item.IsMajorSymptom = false;
+                    if (item.SymptomId == symptom.Id)
+                        item.IsMajorSymptom = true;
+                    _diseaseSymptomService.Update(item.Id, item);
+                }
+
+                var result = new
+                {
+                    Data = "Symptom updated successfully.",
+                    Status = true
+                };
+                return Ok(result);
+            }
+            else
+            {
+
+
+                var result = new
+                {
+                    Data = "Data not found",
+                    Status = false
+                };
+                return Ok(result);
+            }
+
+        }
+
     }
 
 
-    
+
 }

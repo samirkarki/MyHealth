@@ -162,3 +162,22 @@ export const deleteSymptomDetails = async (id, symptomID) => {
     return false;
   }
 };
+
+export const setMajorSymptomDetail = async (id, symptomId) => {
+  let config = tokenConfig();
+  let obj = JSON.stringify({ Id: symptomId });
+  let result = await axios.post(
+    `/api/diseases/${id}/symptoms/setmajor`,
+    obj,
+    config
+  );
+
+  if (result.status === 200) {
+    let response = result.data;
+    notifySuccess(response.data);
+    return response.status;
+  } else {
+    notifyError("Cannot delete details. Please try again.");
+    return false;
+  }
+};

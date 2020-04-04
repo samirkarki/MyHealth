@@ -3,7 +3,8 @@ import DiseaseSymptomAdd from "./disease-symptom-add";
 
 import {
   getdiseasesymptoms,
-  deleteSymptomDetails
+  deleteSymptomDetails,
+  setMajorSymptomDetail
 } from "../../../store/actions/diseaseActions";
 import { useDispatch } from "react-redux";
 
@@ -53,6 +54,13 @@ const DiseaseSymptomMap = props => {
     }
   };
 
+  const setMajorSymptom = async detail => {
+    let data = await setMajorSymptomDetail(currentDisease.id, detail.id);
+    if (data) {
+      fetchData();
+    }
+  };
+
   return (
     <div>
       {initAdd ? (
@@ -85,8 +93,9 @@ const DiseaseSymptomMap = props => {
             <thead>
               <tr className="row col-12">
                 <th className="col-1">#</th>
-                <th className="col-8">Title</th>
-                <th className="col-3 ">
+                <th className="col-4">Title</th>
+                <th className="col-3">Is Major</th>
+                <th className="col-4 ">
                   <span className="row">Action</span>{" "}
                 </th>
               </tr>
@@ -94,18 +103,47 @@ const DiseaseSymptomMap = props => {
             <tbody>
               {symptomsList.length > 0 ? (
                 symptomsList.map((detail, index) => {
+                  let isMajorSymptom = detail.isMajorSymptom;
+
                   return (
                     <tr className="row col-12" key={index}>
                       <td className="col-1">{index + 1}</td>
-                      <td className="col-8">{detail.name}</td>
-                      <td className="col-3 ">
+                      <td className="col-4">{detail.name}</td>
+                      <td className="col-3">
+                        {isMajorSymptom && (
+                          <div className="custom-control custom-checkbox mb-3 col-12">
+                            <input
+                              className="custom-control-input custom-check"
+                              type="checkbox"
+                              checked={isMajorSymptom}
+                              key={`chk-${detail.id}`}
+                              id={`chk-${detail.id}`}
+                              disabled={true}
+                            />
+                            <label
+                              className="custom-control-label"
+                              for={`chk-${detail.id}`}
+                            ></label>
+                          </div>
+                        )}
+                      </td>
+                      <td className="col-4 ">
                         <div className="row no-gutters float-left">
-                          <span
+                          <button
                             className="btn btn-sm btn-secondary"
+                            onClick={setMajorSymptom.bind(this, detail)}
+                            disabled={isMajorSymptom}
+                          >
+                            Set Major Symptom
+                          </button>
+
+                          <span
+                            className="btn btn-sm btn-secondary ml-lg-2"
                             onClick={editSymptomDetails.bind(this, detail)}
                           >
                             Edit
                           </span>
+
                           <span
                             className="btn btn-sm btn-primary ml-lg-2"
                             onClick={deleteSymptomDetail.bind(this, detail.id)}

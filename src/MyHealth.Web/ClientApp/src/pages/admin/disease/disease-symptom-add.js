@@ -7,7 +7,14 @@ import {
 import SymptomDetailForm from "./symptom-detail";
 
 const DiseaseSymptomAdd = props => {
-  const { currentDisease, backToSymptomList, currentSymptom, setInitAdd, loadData, setCurrentSymptom } = props;
+  const {
+    currentDisease,
+    backToSymptomList,
+    currentSymptom,
+    setInitAdd,
+    loadData,
+    setCurrentSymptom
+  } = props;
   const [symptomsListAdd, setSymptomsListAdd] = useState([]);
   const blankSymptoms = { id: "", checked: false, detailData: [] };
   const [selectedSymptoms, setSelectedSymptoms] = useState([blankSymptoms]);
@@ -77,8 +84,6 @@ const DiseaseSymptomAdd = props => {
       if (currentSymptom) setCurrentSymptom(null);
       if (loadData) loadData();
     }
-
-
   };
 
   return (
@@ -127,30 +132,28 @@ const DiseaseSymptomAdd = props => {
                         >
                           {symptoms.name}
                         </label>
-
-                        {symptoms.selected &&
-                          symptoms.symptomDetails.length > 0 && (
-                            <ul className="col-12 list-group list-group-flush">
-                              <li className="list-group-item ">
-                                <div className="col-12 d-flex">
-                                  <span className="col-4 font-weight-bold">
-                                    Symptom Detail
-                                  </span>
-                                  <span className="col-8 font-weight-bold">
-                                    Occurance
-                                  </span>
-                                </div>
-                              </li>
-                              {symptoms.symptomDetails.map((detail, index) => {
-                                return (
-                                  <li className="list-group-item" key={index}>
-                                    <SymptomDetailForm detail={detail} />{" "}
-                                  </li>
-                                );
-                              })}
-                            </ul>
-                          )}
                       </div>
+                      {symptoms.selected && symptoms.symptomDetails.length > 0 && (
+                        <ul className="col-12 list-group list-group-flush">
+                          <li className="list-group-item ">
+                            <div className="col-12 d-flex">
+                              <span className="col-4 font-weight-bold">
+                                Symptom Detail
+                              </span>
+                              <span className="col-8 font-weight-bold">
+                                Occurance
+                              </span>
+                            </div>
+                          </li>
+                          {symptoms.symptomDetails.map((detail, index) => {
+                            return (
+                              <li className="list-group-item" key={index}>
+                                <SymptomDetailForm detail={detail} />{" "}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
                     </div>
                   </td>
                 </tr>

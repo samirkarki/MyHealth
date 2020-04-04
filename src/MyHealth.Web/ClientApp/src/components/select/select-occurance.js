@@ -2,7 +2,6 @@ import React, {useState} from "react";
 
 const OccuranceSelect = ({ id, changedEvent, value, ...props }) => {
 
-debugger;
   return (
     <select
       className="custom-select col-4"

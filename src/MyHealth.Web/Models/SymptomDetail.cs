@@ -9,5 +9,6 @@ namespace MyHealth.Web.Models
         public string Description { get; set; }
         public string Remarks { get; set; }
         public decimal Score { get; set; }
+        public bool IsMajorSymptom { get; set; }
     }
 }

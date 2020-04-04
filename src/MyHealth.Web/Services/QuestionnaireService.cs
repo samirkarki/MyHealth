@@ -106,6 +106,16 @@ namespace MyHealth.Web.Services
             foreach (var symptom in disease.Symptoms)
             {
                 symptom.SymptomDetails = _symptomDetailService.Query(s => s.SymptomId == symptom.Id);
+                foreach (SymptomDetail detail in symptom.SymptomDetails)
+                {
+                    var symp = _diseaseSymptomService.Query(ds => ds.DiseaseId == diseaseId && ds.SymptomId == detail.SymptomId && ds.SymptomDetailId == detail.Id).ToList();
+                    if (symp.Count > 0)
+                    {
+                        symptom.IsMajorSymptom = symp[0].IsMajorSymptom;
+                    }
+
+
+                }
             }
             return disease;
         }

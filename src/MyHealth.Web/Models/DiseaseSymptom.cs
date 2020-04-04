@@ -9,8 +9,8 @@ namespace MyHealth.Web.Models
         public string SymptomId { get; set; }
         public string SymptomDetailId { get; set; }
         public decimal Score { get; set; }
-        public bool IsMajorSymptom {get;set;}
-        
+        public bool IsMajorSymptom { get; set; }
+
     }
 
 }

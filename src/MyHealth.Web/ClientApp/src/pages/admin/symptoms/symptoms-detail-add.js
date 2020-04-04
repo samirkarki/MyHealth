@@ -19,7 +19,6 @@ const SymptomsDetailAdd = props => {
   }, []);
 
   const loadDetailsData = () => {
-    debugger;
     if (currentDetail) {
       setDescription(currentDetail.description);
       setRemarks(currentDetail.remarks);

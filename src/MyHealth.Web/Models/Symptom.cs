@@ -8,6 +8,7 @@ namespace MyHealth.Web.Models
     {
         public string Name { get; set; }
         public string Remarks { get; set; }
+        public bool IsMajorSymptom { get; set; }
         public IEnumerable<SymptomDetail> SymptomDetails{get;set;}
     }
 }
