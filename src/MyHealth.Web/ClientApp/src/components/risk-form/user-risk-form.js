@@ -152,8 +152,7 @@ class UserRiskForm extends Component {
                         userId: user.userId,
                         symptomId: item.symptomId.toString(),
                         symptomDetailId: item.id.toString(),
-                        selected: item.selected,
-                        id: item.id.toString()
+                        selected: item.selected
                     }
                     checkedSymptoms.push(obj)
                 }
