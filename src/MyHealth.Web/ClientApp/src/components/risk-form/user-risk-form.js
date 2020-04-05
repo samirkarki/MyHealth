@@ -75,8 +75,6 @@ class UserRiskForm extends Component {
         axios.get(`/api/questionnaire/${user.userId}`, config)
             .then(res => {
 
-                console.log('loading dis', res.data.symptoms)
-
                 const symptoms = res.data.symptoms
 
                 symptoms.forEach(itemdetail => {

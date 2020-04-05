@@ -15,6 +15,11 @@ const EditDiseaseForm = props => {
         setDisease({ ...disease, [name]: value })
     }
 
+    const setSafetyMeasure = event => {
+        const { name, value } = event.target;
+        setDisease({ ...disease, [name]: value })
+    }
+
     return (
         <form className="form"
             onSubmit={event => {
@@ -26,6 +31,10 @@ const EditDiseaseForm = props => {
             <input type="text" name="name" className="form-control" value={disease.name} onChange={handleInputChange} />
 
             <br />
+            <label> Safety Measures </label>
+            <textarea className="form-control" name="safetyMeasures" value={disease.safetyMeasures} required onChange={setSafetyMeasure}></textarea>
+            <br/
+            >
             <button className="btn btn-secondary btn-sm">Update</button> 
             <button style={{marginLeft: '25px'}} onClick={() => props.setEditing(false)} className="btn btn-primary btn-sm">
                 Cancel

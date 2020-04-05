@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import {
     LOAD_QUESTIONS_START, LOAD_QUESTIONS_SUCCESS, LOAD_QUESTIONS_ERROR,
-    SAVE_QUESTIONS_ERROR, SAVE_QUESTIONS_SUCCESS, SAVE_QUESTIONS_START,LOAD_QUESTIONS_INITIAL_STATE
+    SAVE_QUESTIONS_ERROR, SAVE_QUESTIONS_SUCCESS, SAVE_QUESTIONS_START,LOAD_QUESTIONS_INITIAL_STATE,
+    LOAD_RESULT_START, LOAD_RESULT_SUCCESS, LOAD_RESULT_ERROR
 } from './types';
 
 import { notifyError, notifySuccess } from '../../components/toast/toast';
@@ -83,7 +84,6 @@ export const load = () => dispatch => {
                 }
             })
 
-            console.log('action ques', questionaaire)
             dispatch({ type: LOAD_QUESTIONS_SUCCESS, payload: questionaaire })
             // dispatch({ type: LOAD_QUESTIONS_SUCCESS, payload: res.data })
         })
@@ -114,5 +114,26 @@ export const saveUserResponse = (item) => dispatch => {
             console.log(err);
             dispatch({ type: SAVE_QUESTIONS_ERROR })
             notifyError('Cannot save your answers. Please try again.')
+        })
+}
+
+
+// load result
+
+export const loadUserResult = () => dispatch => {
+
+    dispatch({ type: LOAD_RESULT_START })
+
+    const config = tokenConfig();
+    const userid = getUserIdFromToken();
+
+    axios.get(`/api/questionnaire`, config)
+        .then(res => {
+            dispatch({ type: LOAD_RESULT_SUCCESS, payload: res.data })
+        })
+        .catch(err => {
+            console.log(err);
+            dispatch({ type: LOAD_RESULT_ERROR })
+            //notifyError('Cannot load results. Please try again.')
         })
 }

@@ -33,7 +33,7 @@ const DiseaseForm = () => {
   }, []);
 
   // add form logic
-  const blankDisease = { name: "" };
+  const blankDisease = { name: "", safetyMeasures: "" };
   const [diseaseState, setDiseaseState] = useState([{ ...blankDisease }]);
 
   const addDisease = () => {
@@ -46,6 +46,13 @@ const DiseaseForm = () => {
       e.target.value;
     setDiseaseState(updatedDisease);
   };
+
+  const setSafetyMeasure = e => {
+    const updatedDisease = [...diseaseState];
+    updatedDisease[e.target.name].safetyMeasures =
+      e.target.value;
+    setDiseaseState(updatedDisease);
+  }
 
   const clearForm = () => {
     setDiseaseState([{ ...blankDisease }]);
@@ -107,7 +114,7 @@ const DiseaseForm = () => {
   // end pagination
 
 
-  const selectDiseaseFunc = (param)=>(e) => {
+  const selectDiseaseFunc = (param) => (e) => {
     e.preventDefault()
     const item = param
     item.selected = !item.selected
@@ -122,73 +129,84 @@ const DiseaseForm = () => {
           backToList={backToList}
         />
       ) : (
-        <div className="row">
-          <div className="col-md-4">
-            {editing ? (
-              <Fragment>
-                <h3>Edit Disease</h3>
-                <div className="clearfix"></div>
-
-                <EditDiseaseForm
-                  editing={editing}
-                  setEditing={setEditing}
-                  currentDisease={currentEditItem}
-                  update={update}
-                />
-              </Fragment>
-            ) : (
-              <form onSubmit={submitForm} style={{ marginTop: "5px" }}>
-                <h3>Add Disease</h3>
-
-                <input
-                  type="button"
-                  className="btn btn-primary btn-sm float-right"
-                  value="Add New Disease"
-                  onClick={addDisease}
-                />
-
-                <div className="clearfix"></div>
-
+          <div className="row">
+            <div className="col-md-4">
+              {editing ? (
                 <Fragment>
-                  {diseaseState.map((val, idx) => (
-                    <CustomInput
-                      key={`disease-${idx}`}
-                      idx={idx}
-                      inputState={diseaseState}
-                      handleChange={handleDiseaseChange}
-                      required={true}
-                      title={`disease #${idx + 1}`}
-                      value={val.name}
-                    />
-                  ))}
+                  <h3>Edit Disease</h3>
+                  <div className="clearfix"></div>
+
+                  <EditDiseaseForm
+                    editing={editing}
+                    setEditing={setEditing}
+                    currentDisease={currentEditItem}
+                    update={update}
+                  />
                 </Fragment>
-                <input
-                  type="submit"
-                  value="Submit"
-                  className="btn btn-primary"
+              ) : (
+                  <form onSubmit={submitForm} style={{ marginTop: "5px" }}>
+                    <h3>Add Disease</h3>
+
+                    <input
+                      type="button"
+                      className="btn btn-primary btn-sm float-right"
+                      value="Add New Disease"
+                      onClick={addDisease}
+                    />
+
+                    <div className="clearfix"></div>
+
+                    <Fragment>
+                      {diseaseState.map((val, idx) => {
+                        return (
+                          <div key={idx} style={{ marginTop:'10px', marginBottom:'10px' }}>
+
+                            <div className="card border-primary">
+                              <div className="card-body">
+                                <CustomInput
+                                  key={`disease-${idx}`}
+                                  idx={idx}
+                                  inputState={diseaseState}
+                                  handleChange={handleDiseaseChange}
+                                  required={true}
+                                  title={`disease #${idx + 1}`}
+                                  value={val.name}
+                                />
+                                <label> Safety Measures </label>
+                                <textarea className="form-control" idx={idx} name={idx} value={val.safetyMeasures} required onChange={setSafetyMeasure}></textarea>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </Fragment>
+                    <input
+                      type="submit"
+                      value="Submit"
+                      className="btn btn-primary"
+                    />
+                  </form>
+                )}
+            </div>
+            <div className="col-md-8">
+              <ClientPagination
+                data={tableData.diseaseInfo != null ? tableData.diseaseInfo : []}
+                itemsPerPage={itemsPerPage}
+                activeClassName=""
+                parentCallback={callback}
+              >
+                <DiseaseTable
+                  data={currentDataItems}
+                  editRow={editRow}
+                  delete={deleteDisease}
+                  showSymptoms={loadSymptoms}
+                  selectDiseaseFn={selectDiseaseFunc}
+                  checkedItems={checkedItems}
                 />
-              </form>
-            )}
+              </ClientPagination>
+            </div>
           </div>
-          <div className="col-md-8">
-            <ClientPagination
-              data={tableData.diseaseInfo != null ? tableData.diseaseInfo : []}
-              itemsPerPage={itemsPerPage}
-              activeClassName=""
-              parentCallback={callback}
-            >
-              <DiseaseTable
-                data={currentDataItems}
-                editRow={editRow}
-                delete={deleteDisease}
-                showSymptoms={loadSymptoms}
-                selectDiseaseFn={selectDiseaseFunc}
-                checkedItems={checkedItems}
-              />
-            </ClientPagination>
-          </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };
