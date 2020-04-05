@@ -70,9 +70,9 @@ class UserRiskForm extends Component {
     componentDidMount() {
 
         const config = tokenConfig();
-        const userid = getUserIdFromToken();
+        const user = getUserIdFromToken();
 
-        axios.get(`/api/questionnaire/${userid}`, config)
+        axios.get(`/api/questionnaire/${user.userId}`, config)
             .then(res => {
 
                 console.log('loading dis', res.data.symptoms)
