@@ -74,6 +74,7 @@ namespace MyHealth.Web.Services
         public IEnumerable<UserScore> SaveQuestionnaire(Questionnaire questionnaire){
             var user = _userInfoService.Get(questionnaire.UserId);
             user.Age=questionnaire.Age;
+            user.Gender=questionnaire.Gender;
             user.ContactNumber = questionnaire.ContactNumber;
             _userInfoService.Update(user.Id, user);
 
@@ -81,14 +82,17 @@ namespace MyHealth.Web.Services
             var userScores = new List<UserScore>();
             foreach(var disease in GetActiveDiseases()){
                 var userScore = new UserScore();
+                userScore.DiseaseId = disease.Id;
+                userScore.DiseaseName = disease.Name;
+                userScore.UserId = questionnaire.UserId;
                 var diseaseSymptoms = _diseaseSymptomService.Query(ds => ds.DiseaseId==disease.Id);
                 foreach(var diseaseSymptom in diseaseSymptoms){
                     var selectedSymptomDetail = questionnaire.UserSymptoms.FirstOrDefault(us=>us.SymptomDetailId==diseaseSymptom.SymptomDetailId && us.Selected);
                     if(selectedSymptomDetail !=null){
-                        userScore.TotalScore+=userScore.TotalScore;
+                        userScore.TotalScore+=diseaseSymptom.Score;
                         if(diseaseSymptom.IsMajorSymptom){
                             userScore.MajorSymptomCount += 1;
-                            userScore.MajorScore+=userScore.MajorScore;
+                            userScore.MajorScore+=diseaseSymptom.Score;
                         }
                     }
                 }
