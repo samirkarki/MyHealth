@@ -84,6 +84,7 @@ namespace MyHealth.Web.Services
                 var userScore = new UserScore();
                 userScore.DiseaseId = disease.Id;
                 userScore.DiseaseName = disease.Name;
+                userScore.SafetyMeasures = disease.SafetyMeasures;
                 userScore.UserId = questionnaire.UserId;
                 var diseaseSymptoms = _diseaseSymptomService.Query(ds => ds.DiseaseId==disease.Id);
                 foreach(var diseaseSymptom in diseaseSymptoms){
