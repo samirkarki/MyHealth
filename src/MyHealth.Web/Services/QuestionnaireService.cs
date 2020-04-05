@@ -103,6 +103,10 @@ namespace MyHealth.Web.Services
             return userScores;
         }
 
+        public IEnumerable<UserScore> GetResult(string userId){
+            return _userScoreService.Query(us=>us.UserId==userId);
+        }
+
         public Disease GetDiseaseSymptoms(string diseaseId)
         {
             var disease = _diseaseService.Get(diseaseId);

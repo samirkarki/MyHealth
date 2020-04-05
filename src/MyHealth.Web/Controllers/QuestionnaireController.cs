@@ -32,5 +32,12 @@ namespace MyHealth.Web.Controllers
             return Ok(userScores);
         }
 
+        [HttpGet]
+        public ActionResult<IEnumerable<UserScore>> Result(string userId)
+        {
+            var userScores = _questionnaireService.GetResult(userId);
+            return Ok(userScores);
+        }
+
    }
 }
