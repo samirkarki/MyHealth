@@ -119,15 +119,13 @@ namespace MyHealth.Web.Controllers
         public ActionResult<SymptomDetail> SetMajorSymptom(string diseaseId, Symptom symptom)
         {
 
-            var symptomDetails = _diseaseSymptomService.Query(s => s.DiseaseId == diseaseId).ToList();
+            var symptomDetails = _diseaseSymptomService.Query(s => s.DiseaseId == diseaseId && s.SymptomId==symptom.Id).ToList();
 
             if (symptomDetails.Count > 0)
             {
                 foreach (var item in symptomDetails)
                 {
-                    item.IsMajorSymptom = false;
-                    if (item.SymptomId == symptom.Id)
-                        item.IsMajorSymptom = true;
+                    item.IsMajorSymptom = symptom.IsMajorSymptom;
                     _diseaseSymptomService.Update(item.Id, item);
                 }
 

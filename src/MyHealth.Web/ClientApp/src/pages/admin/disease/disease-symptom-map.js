@@ -55,7 +55,7 @@ const DiseaseSymptomMap = props => {
   };
 
   const setMajorSymptom = async detail => {
-    let data = await setMajorSymptomDetail(currentDisease.id, detail.id);
+    let data = await setMajorSymptomDetail(currentDisease.id, detail.id, !detail.isMajorSymptom);
     if (data) {
       fetchData();
     }
@@ -132,9 +132,8 @@ const DiseaseSymptomMap = props => {
                           <button
                             className="btn btn-sm btn-secondary"
                             onClick={setMajorSymptom.bind(this, detail)}
-                            disabled={isMajorSymptom}
                           >
-                            Set Major Symptom
+                            {isMajorSymptom?"Unset Major Symptom":"Set Major Symptom"}
                           </button>
 
                           <span

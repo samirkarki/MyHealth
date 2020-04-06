@@ -163,9 +163,9 @@ export const deleteSymptomDetails = async (id, symptomID) => {
   }
 };
 
-export const setMajorSymptomDetail = async (id, symptomId) => {
+export const setMajorSymptomDetail = async (id, symptomId, isMajorSymptom) => {
   let config = tokenConfig();
-  let obj = JSON.stringify({ Id: symptomId });
+  let obj = JSON.stringify({ Id: symptomId, IsMajorSymptom:isMajorSymptom });
   let result = await axios.post(
     `/api/diseases/${id}/symptoms/setmajor`,
     obj,
