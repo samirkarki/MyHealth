@@ -33,6 +33,7 @@ namespace MyHealth.Web.Controllers
         }
 
         [HttpGet]
+        [Route("{userId}/result")]
         public ActionResult<IEnumerable<UserScore>> Result(string userId)
         {
             var userScores = _questionnaireService.GetResult(userId);

@@ -90,6 +90,8 @@ namespace MyHealth.Web.Services
                 foreach(var diseaseSymptom in diseaseSymptoms){
                     var selectedSymptomDetail = questionnaire.UserSymptoms.FirstOrDefault(us=>us.SymptomDetailId==diseaseSymptom.SymptomDetailId && us.Selected);
                     if(selectedSymptomDetail !=null){
+                        userScore.TotalSymptomCount+=1;
+                        userScore.TotalScore+=userScore.TotalScore;
                         userScore.TotalScore+=diseaseSymptom.Score;
                         if(diseaseSymptom.IsMajorSymptom){
                             userScore.MajorSymptomCount += 1;
@@ -97,7 +99,12 @@ namespace MyHealth.Web.Services
                         }
                     }
                 }
+                if(userScore.TotalSymptomCount>0)
+                    userScore.TotalScore = userScore.TotalScore/userScore.TotalSymptomCount;
+                if(userScore.MajorSymptomCount>0)
+                    userScore.MajorScore = userScore.MajorScore/userScore.MajorSymptomCount;
                 userScores.Add(userScore);
+                _userScoreService.Remove(us=>us.UserId==userScore.UserId && us.DiseaseId==userScore.DiseaseId);
             }
             _userScoreService.CreateMany(userScores);
             return userScores;

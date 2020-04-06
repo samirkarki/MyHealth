@@ -61,6 +61,7 @@ namespace MyHealth.Web.Services
         public void Remove(string id) => 
             _collection.DeleteOne(item => item.Id == id);
 
+public void Remove(Expression<Func<T, bool>> filter)=>_collection.DeleteMany(filter);
         public IEnumerable<T> Query()
         {
             return _collection.Find(FilterDefinition<T>.Empty).ToList();

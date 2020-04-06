@@ -28,7 +28,7 @@ const ResultViewComponent = ({ dataitem, ...props }) => {
                         </p>
                             </div>
                             {
-                                dataitem.safetyMeasures.split(',').map((item, idx) => {
+                                dataitem.safetyMeasures?.split(',').map((item, idx) => {
                                     return <p key={idx}> &rarr; {item}</p>
                                 })
                             }

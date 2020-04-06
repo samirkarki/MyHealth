@@ -125,9 +125,9 @@ export const loadUserResult = () => dispatch => {
     dispatch({ type: LOAD_RESULT_START })
 
     const config = tokenConfig();
-    const userid = getUserIdFromToken();
+    const user = getUserIdFromToken();
 
-    axios.get(`/api/questionnaire`, config)
+    axios.get(`/api/questionnaire/${user.userId}/result`, config)
         .then(res => {
             dispatch({ type: LOAD_RESULT_SUCCESS, payload: res.data })
         })
