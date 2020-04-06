@@ -1,27 +1,36 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { loadUser, returnLoggedInUser } from '../../store/actions/authAction';
+
 
 const AdminRoutes = ({ component: Component, ...rest }) => {
+
     const dispatch = useDispatch()
-    const auth = useSelector(state => state.authReducer);
+
+    const checkAuth = () => {
+        const user = dispatch(returnLoggedInUser())
+        if (user) {
+            if(user.isAdmin == true || user.isAdmin == "True") {
+                return true
+            }
+            return false;
+        }else{
+            return false;
+        }
+    };
+    
 
     return (
-        <Route
+        <Route exact
             {...rest}
-            render={props => {
-                if (auth.isLoading) {
-                    return <h2>Loading...</h2>
-                } else if (!auth.isAuthenticated) {
-                    return <Redirect to="/login" />
-                } else {
-                    if(auth.user.Role !== 'Admin') {
-                        return <Redirect to="/" />
-                    }else{
-                        return <Component {...props} />
-                    }
-                }
-            }}
+            render={props => 
+                checkAuth() === true ? (
+                    <Component {...props} />
+                ): (
+                    <Redirect to="/" />
+                )
+            }
         />
     )
 }

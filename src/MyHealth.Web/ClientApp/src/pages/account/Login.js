@@ -75,10 +75,10 @@ const Login = () => {
 
 
     if (auth.isAuthenticated) {
-        if(auth.user.Role == 'Admin') {
-            return <Redirect to="/admin/dashboard" />
+        if(auth.user.isAdmin == true || auth.user.isAdmin == 'True') {
+            return <Redirect to="/admin/management" />
         }else{
-            return <Redirect to="/test-covid" />
+            return <Redirect to="/" />
         }
     }
 
@@ -101,7 +101,7 @@ const Login = () => {
 
                                 <div className="form-group">
                                     <fieldset>
-                                        <label className="control-label">Email</label>
+                                        <label className="control-label">Password</label>
                                         <input className="form-control" type="password" placeholder="Email" onChange={e => setPassword(e.target.value)} />
                                     </fieldset>
                                 </div>

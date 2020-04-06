@@ -10,6 +10,7 @@ import { tokenConfig, getUserIdFromToken } from '../../utils/tokenUtility';
 import axios from 'axios';
 import { notifyError, notifyInfo } from '../../components/toast/toast'
 import { Redirect } from 'react-router-dom';
+import Loader from '../loader';
 
 
 // const symptoms = [
@@ -179,27 +180,18 @@ class UserRiskForm extends Component {
 
 
     render() {
-
-        if (this.props.questions_state.responseScore) {
-            return <Redirect to='/result' />
-        }
-
         return (
             <div>
                 <form className="form" onSubmit={this.saveResponse}>
 
                     <div className="form-group">
-                        <fieldset>
-                            <label className="control-label"><strong>तपाइको उमेर :</strong></label>
-                            <input className="form-control" name="age" required type="number" placeholder="तपाइको उमेर :" onChange={this.setAge} />
-                        </fieldset>
+                        <label className="control-label"><strong>तपाइको उमेर :</strong></label>
+                        <input style={{ width: '500px' }} className="form-control" name="age" required type="number" placeholder="तपाइको उमेर :" onChange={this.setAge} />
                     </div>
 
                     <div className="form-group">
-                        <fieldset>
-                            <label className="control-label"><strong>Contact number :</strong></label>
-                            <input className="form-control" name="contact_number" type="text" placeholder="Phone Number :" onChange={this.setContactNumber} />
-                        </fieldset>
+                        <label className="control-label"><strong>Contact number :</strong></label>
+                        <input style={{ width: '500px' }} className="form-control" name="contact_number" type="text" placeholder="Phone Number :" onChange={this.setContactNumber} />
                     </div>
 
                     <div className="form-group">
@@ -216,13 +208,20 @@ class UserRiskForm extends Component {
                     </div>
 
 
-
-                    <label><strong>तपाइ ले निम्न लिखित कुन कुन लक्ष्यनहरु अनुभब गर्नु भएको छ   :</strong></label><br />
                     {
-                        this.state.questionaaire.length > 0 ? <QuestionComponent data={this.state.questionaaire} onChange={this.handleChange} /> : <div>Loading...</div>
+                        this.state.questionaaire.length > 0 ? (
+                            <Fragment>
+                                <label><strong>तपाइ ले निम्न लिखित कुन कुन लक्ष्यनहरु अनुभब गर्नु भएको छ   :</strong></label><br />
+                                <QuestionComponent data={this.state.questionaaire} onChange={this.handleChange} />
+
+                                <button type="submit" className="btn btn-primary">Submit</button>
+
+                            </Fragment>
+                        ) : (
+                                <Loader />
+                            )
                     }
 
-                    <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
             </div>
         )

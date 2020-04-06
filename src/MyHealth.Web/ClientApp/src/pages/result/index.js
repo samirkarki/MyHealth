@@ -1,8 +1,28 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import {loadUserResult} from '../../store/actions/questionActions';
+import { Redirect, Link } from 'react-router-dom';
+import { loadUserResult } from '../../store/actions/questionActions';
+import Loader from '../../components/loader';
 
+
+const NotTestedYetComponent = ({ ...props }) => {
+    return (
+        <div className="col-md-12" style={{ marginTop: '20px' }}>
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="card border-secondary">
+                        <div className="card-body">
+                            <p>You haven't filled up covid test form. Please test yourself to see the results.</p>
+                            <p>
+                                <Link to="/test-covid">Go to test page</Link>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 const ResultViewComponent = ({ dataitem, ...props }) => {
     return (
@@ -25,7 +45,7 @@ const ResultViewComponent = ({ dataitem, ...props }) => {
                             <div className="alert alert-dismissible alert-info">
                                 <p className="mb-0">
                                     Hi! Our coronavirus disease self assessment scan has been developed on the basis of guidelines from the WHO and MoH, Government of Nepal. This interaction should not be taken as expert medical advice. Any information you share with us will be kept strictly confidential.
-                        </p>
+                                </p>
                             </div>
                             {
                                 dataitem.safetyMeasures?.split(',').map((item, idx) => {
@@ -49,17 +69,14 @@ const Result = () => {
     const auth = useSelector(state => state.authReducer);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(loadUserResult())
-    },[])
+    }, [])
 
-
-    if (auth.isAuthenticated) {
-        if (!response_state.responseScore) {
-            return <Redirect to="/test-covid" />
-        }
-    } else {
-        return <Redirect to="/login" />
+    if (response_state.responseScore == null) {
+        return <Loader />
+    } else if (response_state.responseScore.length == 0) {
+        return <NotTestedYetComponent />
     }
 
     const getMax = (arr, prop) => {
@@ -74,16 +91,13 @@ const Result = () => {
     const maxTotalScore = getMax(response_state.responseScore, 'totalScore')
     const maxMajorScore = getMax(response_state.responseScore, 'majorScore')
 
-    console.log(maxTotalScore, maxMajorScore)
+    // console.log(maxTotalScore, maxMajorScore)
     const to_show = response_state.responseScore.filter(item => item.totalScore == maxTotalScore.totalScore && item.majorScore == maxMajorScore.majorScore);
-
-    console.log('filtered item ', to_show)
 
     if (to_show.length == 1) {
         return <ResultViewComponent dataitem={to_show[0]} />
     } else {
         const to_show_arr = to_show.filter(item => item.majorScore == maxMajorScore.majorScore);
-        console.log('filtered alternate item ', to_show_arr)
         return <ResultViewComponent dataitem={to_show_arr[0]} />
     }
 }

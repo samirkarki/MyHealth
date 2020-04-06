@@ -12,7 +12,8 @@ export const decodedToken = () =>  {
             firstName: decodedToken.FirstName,
             lastName: decodedToken.LastName,
             role: decodedToken.role,
-            userId: decodedToken.sub
+            userId: decodedToken.sub,
+            isAdmin: decodedToken.IsAdmin
         };
     }
     catch (error) {
@@ -29,7 +30,10 @@ export const getUserIdFromToken = () => {
             userId: decodedToken.sub
         };
     }catch(error){
-        throw error;
+        //throw error;
+        return {
+            userId: null
+        }
     }
 }
 

@@ -93,6 +93,7 @@ namespace MyHealth.Web.Services
                     new Claim("UserName", user.UserName),
                     new Claim("FirstName", user.FirstName),
                     new Claim("LastName", user.LastName),
+                    new Claim("IsAdmin", user.IsAdmin.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

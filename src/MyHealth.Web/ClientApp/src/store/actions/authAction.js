@@ -24,6 +24,20 @@ export const loadUser = () => (dispatch, getState) => {
 }
 
 
+// check token and return user
+export const returnLoggedInUser = () => (dispatch, getState) => {
+    // get token from state
+    const token = getState().authReducer.token;
+    // if token, add header to config
+    if (token) {
+        const userInfo = decodedToken();
+        return userInfo;
+    } else {
+        return null;
+    }
+}
+
+
 // Login 
 export const login = (userInfo) => dispatch => {
     // headers
@@ -38,8 +52,15 @@ export const login = (userInfo) => dispatch => {
     axios.post('/api/authentication', body, config)
         .then(res => {
             console.log(res.data)
+            console.log(res.data.isAdmin)
             dispatch({ type: LOGIN_SUCCESS, payload: res.data })
             notifySuccess('User logged in successfully.');
+
+            // if(res.data.isAdmin) {
+            //     window.location.href = '/admin/dashboard';
+            // }else{
+            //     window.location.href = '/'
+            // }
         })
         .catch(err => {
             console.log(err);

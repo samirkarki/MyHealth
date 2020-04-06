@@ -67,6 +67,7 @@ namespace MyHealth.Web.Controllers
             userInfo.LastName = user.LastName;
             userInfo.UserName = user.UserName;
             userInfo.UserId = user.Id;
+            userInfo.IsAdmin = user.IsAdmin;
             userInfo.Token = user.Token;
             return Ok(userInfo);
         }

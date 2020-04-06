@@ -40,12 +40,12 @@ const Header = () => {
                 <li className="nav-item">
                     <Link to="/result" className="nav-link">Result</Link>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                     <Link to="/user-profile" className="nav-link">Profile</Link>
-                </li>
-                <li className="nav-item">
+                </li> */}
+                {(auth.user.isAdmin == 'True' || auth.user.isAdmin == true) && <li className="nav-item">
                     <Link to="/admin/management" className="nav-link">Admin</Link>
-                </li>
+                </li>}
                 <li className="nav-item">
                     <Link to="/" onClick={() => dispatch(logout())} className="nav-link">Logout</Link>
                 </li>

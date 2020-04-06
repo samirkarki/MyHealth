@@ -109,6 +109,7 @@ export const saveUserResponse = (item) => dispatch => {
         .then(res => {
             dispatch({ type: SAVE_QUESTIONS_SUCCESS, payload: res.data })
             notifySuccess('Answers submitted successfully.');
+            window.location.href = '/result';
         })
         .catch(err => {
             console.log(err);
@@ -122,10 +123,14 @@ export const saveUserResponse = (item) => dispatch => {
 
 export const loadUserResult = () => dispatch => {
 
-    dispatch({ type: LOAD_RESULT_START })
-
     const config = tokenConfig();
     const user = getUserIdFromToken();
+
+    if(!user.userId) {
+        return null;
+    }
+
+    dispatch({ type: LOAD_RESULT_START })
 
     axios.get(`/api/questionnaire/${user.userId}/result`, config)
         .then(res => {

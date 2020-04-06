@@ -8,6 +8,7 @@ namespace MyHealth.Web.Models
         public string LastName { get; set; }
         public string Role { get; set; }
         public string UserId { get; set; }
+        public bool IsAdmin { get; set; }
         public string Token { get; set; }
     }
 }
