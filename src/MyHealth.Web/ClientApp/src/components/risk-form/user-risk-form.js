@@ -159,10 +159,16 @@ class UserRiskForm extends Component {
         })
 
 
-        if (!gender) {
+        if (!age) {
+            notifyInfo('Age is required !')
+            return false
+        } else if (!contact_num) {
+            notifyInfo('Contact number is required !')
+            return false
+        }else if (!gender) {
             notifyInfo('Gender is required !')
             return false
-        } else if (checkedSymptoms.length <= 0) {
+        }else if (checkedSymptoms.length <= 0) {
             notifyInfo('Please answer all the symptoms')
             return false
         } else {
@@ -186,7 +192,7 @@ class UserRiskForm extends Component {
 
                     <div className="form-group">
                         <label className="control-label"><strong>तपाइको उमेर :</strong></label>
-                        <input style={{ width: '500px' }} className="form-control" name="age" required type="number" placeholder="तपाइको उमेर :" onChange={this.setAge} />
+                        <input style={{ width: '500px' }} className="form-control" name="age" type="number" placeholder="तपाइको उमेर :" onChange={this.setAge} />
                     </div>
 
                     <div className="form-group">
