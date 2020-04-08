@@ -24,49 +24,35 @@ namespace MyHealth.Web.Controllers
             return Ok(symptomDetails);
         }
 
-        [HttpPost]
-        [Route("{symptomsId}/details")]
-        public ActionResult<SymptomDetail> AddDetails(string symptomsId, SymptomDetail detail)
-        {
+        // [HttpPost]
+        // [Route("{symptomsId}/details")]
+        // public ActionResult<SymptomDetail> AddDetails(SymptomDetail detail)
+        // {
 
-            var symptomDetails = _symptomDetailService.Query(s => s.SymptomId == symptomsId && s.Description == detail.Description).ToList();
-            if (symptomDetails.Count > 0)
-            {
+        //     var symptomDetail = _symptomDetailService.Get(detail.Id);
+        //     if (symptomDetail != null)
+        //     {
+        //             _symptomDetailService.Update(detail.Id, detail);
+        //             var result = new
+        //             {
+        //                 Data = "Symptom details updated successfully.",
+        //                 Status = true
+        //             };
+        //             return Ok(result);
+        //     }
+        //     else
+        //     {
 
-                var detailData = symptomDetails[0];
-                if (detailData.Id == detail.Id)
-                {
-                    _symptomDetailService.Update(detail.Id, detail);
-                    var result = new
-                    {
-                        Data = "Symptom details updated successfully.",
-                        Status = true
-                    };
-                    return Ok(result);
-                }
-                else
-                {
-                    var result = new
-                    {
-                        Data = "duplicate data found",
-                        Status = false
-                    };
-                    return Ok(result);
-                }
-            }
-            else
-            {
+        //         _symptomDetailService.Create(detail);
+        //         var result = new
+        //         {
+        //             Data = "Symptom details added successfully.",
+        //             Status = true
+        //         };
+        //         return Ok(result);
+        //     }
 
-                _symptomDetailService.Create(detail);
-                var result = new
-                {
-                    Data = "Symptom details added successfully.",
-                    Status = true
-                };
-                return Ok(result);
-            }
-
-        }
+        // }
 
         [HttpDelete]
         [Route("{symptomsId}/details")]

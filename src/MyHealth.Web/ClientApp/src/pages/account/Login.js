@@ -102,7 +102,7 @@ const Login = () => {
                                 <div className="form-group">
                                     <fieldset>
                                         <label className="control-label">Password</label>
-                                        <input className="form-control" type="password" placeholder="Email" onChange={e => setPassword(e.target.value)} />
+                                        <input className="form-control" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
                                     </fieldset>
                                 </div>
 

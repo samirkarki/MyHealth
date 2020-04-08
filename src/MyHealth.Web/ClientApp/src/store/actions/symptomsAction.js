@@ -110,17 +110,20 @@ export const getSymptomsDetail = async id => {
 
 export const addSymptomDetail = async (id, symptomsDetailInfo) => {
   let config = tokenConfig();
-
-  let result = await axios.post(
-    `/api/symptoms/${id}/details`,
+  let result = id? (await axios.put(
+    `/api/symptomdetails/${id}`,
     symptomsDetailInfo,
     config
-  );
+  )): (await axios.post(
+    `/api/symptomdetails`,
+    symptomsDetailInfo,
+    config
+  ));
 
-  if (result.status === 200) {
+  if (result.status === 200 || result.status === 204) {
     let response = result.data;
-    notifySuccess(response.data);
-    return response.status;
+    notifySuccess();
+    return result.status;
   } else {
     notifyError("Cannot update details. Please try again.");
     return false;

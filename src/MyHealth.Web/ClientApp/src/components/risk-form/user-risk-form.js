@@ -217,7 +217,7 @@ class UserRiskForm extends Component {
                     {
                         this.state.questionaaire.length > 0 ? (
                             <Fragment>
-                                <label><strong>तपाइ ले निम्न लिखित कुन कुन लक्ष्यनहरु अनुभब गर्नु भएको छ   :</strong></label><br />
+                                <label><strong>तपाइले निम्न लिखित कुन कुन लक्ष्यनहरु अनुभब गर्नु भएको छ   :</strong></label><br /><br />
                                 <QuestionComponent data={this.state.questionaaire} onChange={this.handleChange} />
 
                                 <button type="submit" className="btn btn-primary">Submit</button>

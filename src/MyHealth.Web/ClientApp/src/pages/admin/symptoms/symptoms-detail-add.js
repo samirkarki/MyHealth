@@ -40,7 +40,7 @@ const SymptomsDetailAdd = props => {
       Remarks: remarks
     };
     let obj = JSON.stringify(dataObj);
-    let data = await addSymptomDetail(currentSymptoms.id, obj);
+    let data = await addSymptomDetail(id, obj);
     if (data) {
       setInitAdd(false);
       if (setcurrentDetail) setcurrentDetail(null);
