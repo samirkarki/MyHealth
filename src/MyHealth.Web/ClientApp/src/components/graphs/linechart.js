@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import CanvasJSReact from "../../assets/canvasjs.react";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const ColumnChart = (prop) => {
+const LineChart = (prop) => {
   const [options, setOptions] = useState(null);
 
   useEffect(() => {
@@ -13,13 +13,13 @@ const ColumnChart = (prop) => {
   const buildOptions = () => {
     let title = prop.title;
     let data = prop.data;
-    let xAxisTitle = prop.xtitle
+    let xAxisTitle = prop.xtitle;
     let yAxisTitle = prop.ytitle;
     let dataPoints = [];
     data.forEach((element) => {
-      dataPoints.push({ label: element.x, y: element.y });
+      dataPoints.push({ x: element.x, y: element.y });
     });
-
+debugger;
     const options = {
       animationEnabled: true,
       exportEnabled: true,
@@ -28,18 +28,19 @@ const ColumnChart = (prop) => {
         text: title,
       },
       axisY: {
-				title: yAxisTitle,
-				includeZero: false,
-				suffix: ""
-			},
-			axisX: {
-				title: xAxisTitle,
-				prefix: "",
-				interval: 1
-			},
+        title: yAxisTitle,
+        includeZero: false,
+        suffix: "",
+      },
+      axisX: {
+        title: xAxisTitle,
+        prefix: "",
+        interval: 1,
+      },
       data: [
         {
-          type: "column",
+          type: "spline",
+          toolTipContent: "{x}: {y}",
           dataPoints: dataPoints,
         },
       ],
@@ -49,7 +50,7 @@ const ColumnChart = (prop) => {
   };
 
   return (
-    <div className='row col-12 no-gutters align-items-center'>
+    <div className="row col-12 no-gutters align-items-center">
       <CanvasJSChart
         options={options}
         /* onRef = {ref => this.chart = ref} */
@@ -58,4 +59,4 @@ const ColumnChart = (prop) => {
   );
 };
 
-export default ColumnChart;
+export default LineChart;

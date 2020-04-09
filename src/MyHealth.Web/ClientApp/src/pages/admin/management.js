@@ -22,6 +22,7 @@ const AdminManagement = () => {
                 <li className="nav-item">
                     <a className="nav-link" data-toggle="tab" href="#infected-country">Infected Country</a>
                 </li>
+                
             </ul>
             <div id="myTabContent" className="tab-content">
                 <div className="tab-pane fade active show" id="disease">
