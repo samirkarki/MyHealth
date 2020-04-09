@@ -103,9 +103,11 @@ namespace MyHealth.Web.Services
                     userScore.TotalScore = userScore.TotalScore/userScore.TotalSymptomCount;
                 if(userScore.MajorSymptomCount>0)
                     userScore.MajorScore = userScore.MajorScore/userScore.MajorSymptomCount;
+                userScore.CreatedDate = DateTime.Today;
                 userScores.Add(userScore);
                 _userScoreService.Remove(us=>us.UserId==userScore.UserId && us.DiseaseId==userScore.DiseaseId);
             }
+            userScores = userScores.OrderByDescending(n => n.MajorScore).Select((n, i) => {n.Rank=i+1;return n;}).ToList();
             _userScoreService.CreateMany(userScores);
             return userScores;
         }
