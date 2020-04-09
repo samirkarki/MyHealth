@@ -45,6 +45,11 @@ const Header = () => {
                 </li> */}
                 {(auth.user.isAdmin == 'True' || auth.user.isAdmin == true) && <li className="nav-item">
                     <Link to="/admin/management" className="nav-link">Admin</Link>
+                   
+                </li>}
+                {(auth.user.isAdmin == 'True' || auth.user.isAdmin == true) && <li className="nav-item">
+                    <Link to="/admin/reports" className="nav-link">Reports</Link>
+                   
                 </li>}
                 <li className="nav-item">
                     <Link to="/" onClick={() => dispatch(logout())} className="nav-link">Logout</Link>

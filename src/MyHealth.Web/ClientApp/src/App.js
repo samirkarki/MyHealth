@@ -20,6 +20,7 @@ import Profile from './pages/profile/Profile';
 import CovidTest from './pages/covid-test/CovidTest';
 import AdminRoutes from './components/common/AdminRoutes';
 import Result from './pages/result';
+import Reports from './pages/admin/report/reports';
 
 const App = () => {
 
@@ -39,6 +40,7 @@ const App = () => {
                                 <Route exact path="/" component={Home} />
                                 <Route exact path="/register" component={Register} />
                                 <Route exact path="/login" component={Login} />
+                                <AdminRoutes exact path="/admin/reports" component={Reports} />
                                 <PrivateRoutes exact path="/result" component={Result} />
                                 <PrivateRoutes exact path="/user-profile" component={Profile} />
                                 <PrivateRoutes exact path="/test-covid" component={CovidTest} />
