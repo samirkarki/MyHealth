@@ -106,6 +106,7 @@ namespace MyHealth.Web.Services
                 userScores.Add(userScore);
                 _userScoreService.Remove(us=>us.UserId==userScore.UserId && us.DiseaseId==userScore.DiseaseId);
             }
+            userScores = userScores.OrderByDescending(n => n.MajorScore).Select((n, i) => {n.Rank=i+1;return n;}).ToList();
             _userScoreService.CreateMany(userScores);
             return userScores;
         }

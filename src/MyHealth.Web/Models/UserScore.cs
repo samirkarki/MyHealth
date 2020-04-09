@@ -10,5 +10,6 @@ namespace MyHealth.Web.Models
         public decimal MajorScore { get; set; }
         public int MajorSymptomCount { get; set; }
         public string SafetyMeasures { get; set; }
+        public int Rank { get; set; }
     }
 }
