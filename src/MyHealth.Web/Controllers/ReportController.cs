@@ -23,7 +23,7 @@ namespace MyHealth.Web
 
         [HttpPost]
         [Route("report/suspected")]
-        public ActionResult<ReportDTO> DeleteDetails(ReportFilter filter)
+        public ActionResult<ReportDTO> SuspectedReport(ReportFilter filter)
         {
             var result = _userScoreService.Query(us => us.DiseaseId == filter.DiseaseId).Where(x => x.CreatedDate.Date >= DateTime.Parse(filter.DateFrom) && x.CreatedDate.Date <= DateTime.Parse(filter.DateTo)).ToList();
 
