@@ -30,7 +30,7 @@ const ColumnChart = (prop) => {
         indexBy="x"
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
         padding={0.3}
-        colors="#e8a838"
+        colors="#EB6864"
         defs={[
          
         ]}
@@ -58,7 +58,7 @@ const ColumnChart = (prop) => {
         }}
         labelSkipWidth={12}
         labelSkipHeight={12}
-        labelTextColor="#111111"
+        labelTextColor="#fff"
         legends={[]}
         animate={true}
         motionStiffness={90}

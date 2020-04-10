@@ -31,7 +31,7 @@ const LineChart = (prop) => {
         data={lineData}
         curve="monotoneX"
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        colors="#e8a838"
+        colors="#EB6864"
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
