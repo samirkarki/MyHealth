@@ -25,13 +25,18 @@ namespace MyHealth.Web
         [Route("/report/suspected")]
         public ActionResult<ReportDTO> DeleteDetails(ReportFilter filter)
         {
-            var result = _userScoreService.Query(us => us.DiseaseId == filter.DiseaseId).GroupBy(x=>x.CreatedDate).ToList();
-            List<ReportDTO> reports = new List<ReportDTO>();
+            var result = _userScoreService.Query(us => us.DiseaseId == filter.DiseaseId).ToList();
 
-            return Ok(reports);
+            List<ReportDTO> _result = result.GroupBy(l => l.CreatedDate.ToString("yyyy/MM/dd")).Select(cl => new ReportDTO
+            {
+                x = cl.Key,
+                y = cl.Count().ToString()
+            }).ToList();
+            
+            return Ok(_result);
 
         }
-        
+
 
     }
 }
