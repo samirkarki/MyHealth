@@ -32,38 +32,10 @@ const ColumnChart = (prop) => {
         padding={0.3}
         colors="#e8a838"
         defs={[
-          {
-            id: "dots",
-            type: "patternDots",
-            background: "inherit",
-            color: "#000",
-            size: 5,
-            padding: 1,
-            stagger: true,
-          },
-          {
-            id: "lines",
-            type: "patternLines",
-            background: "inherit",
-            color: "#000",
-            rotation: -45,
-            lineWidth: 6,
-            spacing: 10,
-          },
+         
         ]}
         fill={[
-          {
-            match: {
-              id: "fries",
-            },
-            id: "dots",
-          },
-          {
-            match: {
-              id: "sandwich",
-            },
-            id: "lines",
-          },
+          
         ]}
         borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
         axisTop={null}
