@@ -19,7 +19,6 @@ const LineChart = (prop) => {
     data.forEach((element) => {
       dataPoints.push({ x: element.x, y: element.y });
     });
-debugger;
     const options = {
       animationEnabled: true,
       exportEnabled: true,
