@@ -74,7 +74,7 @@ const ColumnChart = (prop) => {
           tickRotation: 0,
           legend: xtitle,
           legendPosition: "middle",
-          legendOffset: 32,
+          legendOffset: 45,
         }}
         axisLeft={{
           tickSize: 5,
@@ -82,7 +82,7 @@ const ColumnChart = (prop) => {
           tickRotation: 0,
           legend: ytitle,
           legendPosition: "middle",
-          legendOffset: -40,
+          legendOffset: -45,
         }}
         labelSkipWidth={12}
         labelSkipHeight={12}

@@ -48,7 +48,7 @@ const LineChart = (prop) => {
           tickPadding: 5,
           tickRotation: 0,
           legend: xtitle,
-          legendOffset: 36,
+          legendOffset: 45,
           legendPosition: "middle",
         }}
         axisLeft={{
@@ -57,7 +57,7 @@ const LineChart = (prop) => {
           tickPadding: 5,
           tickRotation: 0,
           legend: ytitle,
-          legendOffset: -40,
+          legendOffset: -45,
           legendPosition: "middle",
         }}
         pointSize={10}
