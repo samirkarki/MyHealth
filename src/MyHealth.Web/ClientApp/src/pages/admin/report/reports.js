@@ -7,11 +7,11 @@ const Reports = () => {
       <ul className="nav nav-tabs">
         <li className="nav-item">
           <a className="nav-link active" data-toggle="tab" href="#graph">
-            Demo
+            Bar
           </a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" data-toggle="tab" href="#suspected">
+          <a className="nav-link " data-toggle="tab" href="#suspected">
             Suspected
           </a>
         </li>
@@ -33,7 +33,7 @@ const Reports = () => {
             </div>
           </div>
         </div>
-        <div className="tab-pane fade" id="suspected">
+        <div className="tab-pane fade " id="suspected">
           <div
             className="card border-secondary mb-3"
             style={{ marginTop: "10px" }}

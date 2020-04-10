@@ -1,58 +1,75 @@
 import React, { useState, useEffect } from "react";
+import "./graph.css";
 
-import CanvasJSReact from "../../assets/canvasjs.react";
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+import { ResponsiveLine } from "@nivo/line";
 
 const LineChart = (prop) => {
-  const [options, setOptions] = useState(null);
+  const [lineData, setLineData] = useState([]);
+  const { xtitle, ytitle } = prop;
 
   useEffect(() => {
-    buildOptions();
+    buildData();
   }, []);
 
-  const buildOptions = () => {
+  const buildData = () => {
     let title = prop.title;
     let data = prop.data;
-    let xAxisTitle = prop.xtitle;
-    let yAxisTitle = prop.ytitle;
     let dataPoints = [];
     data.forEach((element) => {
       dataPoints.push({ x: element.x, y: element.y });
     });
-    const options = {
-      animationEnabled: true,
-      exportEnabled: true,
-      theme: "light2", // "light1", "dark1", "dark2"
-      title: {
-        text: title,
-      },
-      axisY: {
-        title: yAxisTitle,
-        includeZero: false,
-        suffix: "",
-      },
-      axisX: {
-        title: xAxisTitle,
-        prefix: "",
-        interval: 1,
-      },
-      data: [
-        {
-          type: "spline",
-          toolTipContent: "{x}: {y}",
-          dataPoints: dataPoints,
-        },
-      ],
-    };
 
-    return setOptions(options);
+    let linedata = [{ id: title, data: dataPoints }];
+    
+
+    return setLineData(linedata);
   };
 
   return (
-    <div className="row col-12 no-gutters align-items-center">
-      <CanvasJSChart
-        options={options}
-        /* onRef = {ref => this.chart = ref} */
+    <div className="row col-12 no-gutters align-items-center chart">
+      <ResponsiveLine
+        data={lineData}
+        curve="monotoneX"
+        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+        colors="#e8a838"
+        xScale={{ type: "point" }}
+        yScale={{
+          type: "linear",
+          min: "auto",
+          max: "auto",
+          stacked: true,
+          reverse: false,
+        }}
+        axisTop={null}
+        axisRight={null}
+        axisBottom={{
+          orient: "bottom",
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: xtitle,
+          legendOffset: 36,
+          legendPosition: "middle",
+        }}
+        axisLeft={{
+          orient: "left",
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: ytitle,
+          legendOffset: -40,
+          legendPosition: "middle",
+        }}
+        pointSize={10}
+        pointColor={{ theme: "background" }}
+        pointBorderWidth={2}
+        pointBorderColor={{ from: "serieColor" }}
+        pointLabel="y"
+        pointLabelYOffset={-12}
+        useMesh={true}
+        legends={[
+         
+        ]}
       />
     </div>
   );

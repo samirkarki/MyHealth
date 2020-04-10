@@ -1,94 +1,39 @@
-import React, { Component } from "react";
-import CanvasJSReact from "../../../assets/canvasjs.react";
-import { ResponsiveLine } from '@nivo/line'
+import React, { useState, useEffect } from "react";
+import ColumnChart from "../../../components/graphs/columnchart";
+import "./report.css";
 
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+const Graph = () => {
+  const [colData, setColData] = useState([]);
 
-const data = {
-  id: "japan",
-  color: "hsl(14, 70%, 50%)",
-  data: [
-    {
-      x: "plane",
-      y: 240,
-    },
-    {
-      x: "helicopter",
-      y: 216,
-    },
-    {
-      x: "boat",
-      y: 272,
-    },
-    {
-      x: "train",
-      y: 27,
-    },
-    {
-      x: "subway",
-      y: 159,
-    },
-    {
-      x: "bus",
-      y: 61,
-    },
-    {
-      x: "car",
-      y: 6,
-    },
-    {
-      x: "moto",
-      y: 114,
-    },
-    {
-      x: "bicycle",
-      y: 289,
-    },
-    {
-      x: "horse",
-      y: 114,
-    },
-    {
-      x: "skateboard",
-      y: 38,
-    },
-    {
-      x: "others",
-      y: 250,
-    },
-  ],
-};
+  useEffect(() => {
+    ColumnData();
+  }, []);
 
-const options = {
-  animationEnabled: true,
-  exportEnabled: true,
-  theme: "light2", // "light1", "dark1", "dark2"
-  title: {
-    text: "Basic Column Chart in React",
-  },
-  data: [
-    {
-      type: "column",
-      dataPoints: [
-        { label: "Apple", y: 10 },
-        { label: "Orange", y: 15 },
-        { label: "Banana", y: 25 },
-        { label: "Mango", y: 30 },
-        { label: "Grape", y: 28 },
-      ],
-    },
-  ],
-};
+  const ColumnData = () => {
+    let data = [
+      { x: "Apple", y: 10 },
+      { x: "Orange", y: 15 },
+      { x: "Banana", y: 25 },
+      { x: "Mango", y: 30 },
+      { x: "Grape", y: 28 },
+    ];
+    return setColData(data);
+  };
 
-const graph = () => {
   return (
-    <div>
-      <CanvasJSChart
-        options={options}
-        /* onRef = {ref => this.chart = ref} */
-      />
+    <div className="col-12">
+      {colData && colData.length > 0 && (
+        <div className="row">
+          <ColumnChart
+            title="Suspected line"
+            data={colData}
+            xtitle="Date"
+            ytitle="Count"
+          />
+        </div>
+      )}
     </div>
   );
 };
 
-export default graph;
+export default Graph;
