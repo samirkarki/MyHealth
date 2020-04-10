@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ColumnChart from "../../../components/graphs/columnchart";
 import LineChart from "../../../components/graphs/linechart";
-
+import {getSuspectedData} from '../../../store/actions/reportAction'
 const SuspectedReport = () => {
   
   const [lineData, setLineData] = useState([]);
@@ -12,17 +12,25 @@ const SuspectedReport = () => {
 
   
 
-  const GetLineData = () => {
-    let data = [
-      { x: "2020-04-01", y: 23 },
-      { x: "2020-04-02", y: 200 },
-      { x: "2020-04-03", y: 43 },
-      { x: "2020-04-04", y: 28 },
-      { x: "2020-04-05", y: 100 },
-      { x: "2020-04-06", y: 32 },
+  const GetLineData = async () => {
+
+    let diseaseId = "5e8aa77d0e5a5011d47607a7";
+    let dateFrom = '2020-04-04'
+    let dateTo= '2020-04-10'
+    let dataResult = await getSuspectedData(diseaseId,dateFrom, dateTo);
+    //await setSymptomsList(data.symptoms);
+
+    // debugger;
+    // let data = [
+    //   { x: "2020-04-01", y: 23 },
+    //   { x: "2020-04-02", y: 200 },
+    //   { x: "2020-04-03", y: 43 },
+    //   { x: "2020-04-04", y: 28 },
+    //   { x: "2020-04-05", y: 100 },
+    //   { x: "2020-04-06", y: 32 },
       
-    ];
-    return setLineData(data);
+    // ];
+    return setLineData(dataResult);
   };
 
   return (
