@@ -1,6 +1,6 @@
 import React from 'react'
 
-const UserTable = ({ updateAdminFlag, ...props }) => {
+const UserTable = ({ updateAdminFlagFn, ...props }) => {
     return (
         <table className="table table-bordered table-striped">
             <thead>
@@ -19,13 +19,13 @@ const UserTable = ({ updateAdminFlag, ...props }) => {
                             <td>{item.email}</td>
                             <td>{item.userName}</td>
                             <td>
-                            <input
-                          type="checkbox"
-                          checked={item.isAdmin}
-                          key={`chk-${item.id}`}
-                          id={`chk-${item.id}`}
-                          onChange={updateAdminFlag.bind(this, item)}
-                        />
+                                <input 
+                                    type="checkbox" 
+                                    name={item.id} 
+                                    value={item} 
+                                    onChange={updateAdminFlagFn(item)} 
+                                    checked={item.isAdmin}
+                                /> 
                             </td>
                         </tr>
                     ))

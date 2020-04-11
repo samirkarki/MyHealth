@@ -18,15 +18,15 @@ export const initialStateLoad = () => dispatch => {
 }
 
 // save
-export const updateAdminFlag = userInfo => dispatch => {
+export const updateIsAdmin = userInfo => dispatch => {
   dispatch({ type: UPDATE_USER_ADMIN });
 
   let config = tokenConfig();
 
+console.log(userInfo)
   axios
-    .PUT(`/api/users/${userInfo.id}/admin`, config)
+    .put(`/api/users/${userInfo.id}/admin`, userInfo, config)
     .then(res => {
-      dispatch({ type: USER_ADMIN_SUCCESS, payload: res.data });
       dispatch(load());
       notifySuccess("User updated successfully.");
     })

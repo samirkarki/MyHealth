@@ -3,7 +3,7 @@
 import React, { useState, Fragment, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  updateAdminFlag,
+  updateIsAdmin,
   load
 } from "../../../store/actions/userAction";
 import ClientPagination from "../../../components/pagination/client-side-pagination";
@@ -24,6 +24,7 @@ const UserManagement = () => {
 
   // pagination
   let currentDataItems = [];
+
   if (tableData.userInfo) {
     currentDataItems = getCurrentPaginatedItems(
       currentPage,
@@ -38,9 +39,8 @@ const UserManagement = () => {
   // end pagination
 
 
-  const updateAdminFlag = (param) => (e) => {
-    e.preventDefault()
-    dispatch(updateAdminFlag(param));
+  const updateAdminFlag = (param)=>(e) => {
+    dispatch(updateIsAdmin(param));
   }
 
   return (
@@ -55,7 +55,7 @@ const UserManagement = () => {
               >
                 <UserTable
                   data={currentDataItems}
-                  updateAdminFlag={updateAdminFlag}
+                  updateAdminFlagFn={updateAdminFlag}
                 />
               </ClientPagination>
             </div>
