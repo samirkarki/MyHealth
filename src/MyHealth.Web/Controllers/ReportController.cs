@@ -25,7 +25,23 @@ namespace MyHealth.Web
         [Route("report/suspected")]
         public ActionResult<ReportDTO> SuspectedReport(ReportFilter filter)
         {
-            var result = _userScoreService.Query(us => us.DiseaseId == filter.DiseaseId).Where(x => x.CreatedDate.Date >= DateTime.Parse(filter.DateFrom) && x.CreatedDate.Date <= DateTime.Parse(filter.DateTo)).ToList();
+            var result = _userScoreService.Query(us => us.DiseaseId == filter.DiseaseId).Where(x => x.CreatedDate.Date >= DateTime.Parse(filter.DateFrom).Date && x.CreatedDate.Date <= DateTime.Parse(filter.DateTo).Date && x.Rank == 1).OrderBy(x => x.CreatedDate).ToList();
+
+            List<ReportDTO> _result = result.GroupBy(l => l.CreatedDate.ToString("yyyy/MM/dd")).Select(cl => new ReportDTO
+            {
+                x = cl.Key,
+                y = cl.Count().ToString()
+            }).ToList();
+
+            return Ok(_result);
+
+        }
+
+        [HttpPost]
+        [Route("report/suspectedbar")]
+        public ActionResult<ReportDTO> SuspectedBarReport(ReportFilter filter)
+        {
+            var result = _userScoreService.Query(us => us.DiseaseId == filter.DiseaseId).Where(x => x.CreatedDate.Date >= DateTime.Parse(filter.DateFrom).Date && x.CreatedDate.Date <= DateTime.Parse(filter.DateTo).Date && x.Rank == 1).OrderBy(x => x.CreatedDate).ToList();
 
             List<ReportDTO> _result = result.GroupBy(l => l.CreatedDate.ToString("yyyy/MM/dd")).Select(cl => new ReportDTO
             {
