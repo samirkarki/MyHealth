@@ -85,9 +85,10 @@ namespace MyHealth.Web.Controllers
         }
 
         [HttpGet]
+        [Route("")]
         public IEnumerable<UserInfo> Get(string filter)
         {
-            return _userCrudService.Query(filter);
+            return string.IsNullOrEmpty(filter)?_userCrudService.Get(): _userCrudService.Query(filter);
         }
 
 
