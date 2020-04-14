@@ -18,11 +18,12 @@ namespace MyHealth.Web.Controllers
     {
         private readonly IUserService _userService;
         private readonly CrudService<UserInfo> _userCrudService;
-
-        public UsersController(IUserService userService, CrudService<UserInfo> userCrudService)
+        private readonly AppSettings _settings;
+        public UsersController(IUserService userService, CrudService<UserInfo> userCrudService, IOptions<AppSettings> settings)
         {
             _userService = userService;
             _userCrudService = userCrudService;
+            _settings = settings.Value;
         }
 
 
@@ -47,6 +48,13 @@ namespace MyHealth.Web.Controllers
         //     return Ok(userInfo);
         // }
 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("~/api/settings")]
+        public IActionResult GetSettings()
+        {
+            return Ok(_settings);
+        }
         [AllowAnonymous]
         [HttpPost]
         [Route("~/api/authentication")]
@@ -88,7 +96,7 @@ namespace MyHealth.Web.Controllers
         [Route("")]
         public IEnumerable<UserInfo> Get(string filter)
         {
-            return string.IsNullOrEmpty(filter)?_userCrudService.Get(): _userCrudService.Query(filter);
+            return string.IsNullOrEmpty(filter) ? _userCrudService.Get() : _userCrudService.Query(filter);
         }
 
 

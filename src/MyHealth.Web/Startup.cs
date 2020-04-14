@@ -47,6 +47,8 @@ namespace MyHealth.Web
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
+           
+
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
@@ -85,6 +87,8 @@ namespace MyHealth.Web
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyHealth API", Version = "v1" });
             });
+
+            services.AddOptions();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
