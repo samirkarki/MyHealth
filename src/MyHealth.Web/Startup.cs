@@ -15,6 +15,8 @@ using MyHealth.Web.Helpers;
 using MyHealth.Web.Models;
 using MyHealth.Web.Services;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace MyHealth.Web
 {
@@ -101,6 +103,16 @@ namespace MyHealth.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions    //For the '.well-known' folder
+            {
+                FileProvider = new PhysicalFileProvider(System.IO.Path.Combine(Directory.GetCurrentDirectory(), ".well-known")),
+                RequestPath = "/.well-known",
+                ServeUnknownFileTypes = true,
+            });
+
+
+            
             app.UseSpaStaticFiles();
 
              app.UseSwagger();
