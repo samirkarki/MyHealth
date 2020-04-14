@@ -31,7 +31,6 @@ const Login = () => {
   const auth = useSelector((state) => state.authReducer);
 
   const responseGoogle = (response) => {
-    debugger;
     console.log(response.profileObj);
 
     let email = null;
