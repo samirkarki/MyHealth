@@ -100,7 +100,7 @@ namespace MyHealth.Web.Controllers
             var user = _userCrudService.Get(userId);
             if (user == null)
                 return BadRequest(new { message = "User does not exist." });
-            user.IsAdmin = true;
+            user.IsAdmin = !user.IsAdmin;
             _userCrudService.Update(user.Id, user);
             return Ok(user);
         }

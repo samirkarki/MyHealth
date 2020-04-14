@@ -25,16 +25,17 @@ const NotTestedYetComponent = ({ ...props }) => {
 }
 
 const ResultViewComponent = ({ dataitem, ...props }) => {
+    if(!dataitem) {
+        return <NotTestedYetComponent />
+    }
     return (
         <div className="col-md-12" style={{ marginTop: '20px' }}>
             <div className="row">
                 <div className="col-md-4">
-                    <div className="card border-secondary">
-                        <div className="card-header">Results</div>
+                    <div className="card text-white bg-info mb-3">
+                        <div className="card-header"><h4 className="card-title">Predictions: </h4></div>
                         <div className="card-body">
-                            <h4 className="card-title">Predictions: </h4>
-                            <p className="card-text">Predicted Disease: <span>{dataitem.diseaseName}</span></p>
-                            <p className="card-text">Predicted Score: <span>{dataitem.totalScore}</span></p>
+                            <p className="card-text"><h5>Predicted Disease: <span>{dataitem.diseaseName}</span></h5></p>
                         </div>
                     </div>
                 </div>
@@ -77,29 +78,30 @@ const Result = () => {
         return <Loader />
     } else if (response_state.responseScore.length == 0) {
         return <NotTestedYetComponent />
+    } else {
+        const prediction = response_state.responseScore.filter(item => item.rank == 1)[0]
+        return <ResultViewComponent dataitem={prediction} />
     }
 
-    const getMax = (arr, prop) => {
-        var max;
-        for (var i = 0; i < arr.length; i++) {
-            if (max == null || parseFloat(arr[i][prop]) > parseFloat(max[prop]))
-                max = arr[i];
-        }
-        return max;
-    }
+    // const getMax = (arr, prop) => {
+    //     var max;
+    //     for (var i = 0; i < arr.length; i++) {
+    //         if (max == null || parseFloat(arr[i][prop]) > parseFloat(max[prop]))
+    //             max = arr[i];
+    //     }
+    //     return max;
+    // }
 
-    const maxTotalScore = getMax(response_state.responseScore, 'totalScore')
-    const maxMajorScore = getMax(response_state.responseScore, 'majorScore')
+    // const maxTotalScore = getMax(response_state.responseScore, 'totalScore')
+    // const maxMajorScore = getMax(response_state.responseScore, 'majorScore')
 
     // console.log(maxTotalScore, maxMajorScore)
-    const to_show = response_state.responseScore.filter(item => item.totalScore == maxTotalScore.totalScore && item.majorScore == maxMajorScore.majorScore);
+    // const to_show = response_state.responseScore.filter(item => item.totalScore == maxTotalScore.totalScore && item.majorScore == maxMajorScore.majorScore);
 
-    if (to_show.length == 1) {
-        return <ResultViewComponent dataitem={to_show[0]} />
-    } else {
-        const to_show_arr = to_show.filter(item => item.majorScore == maxMajorScore.majorScore);
-        return <ResultViewComponent dataitem={to_show_arr[0]} />
-    }
+    // else {
+    //     const to_show_arr = to_show.filter(item => item.majorScore == maxMajorScore.majorScore);
+    //     return <ResultViewComponent dataitem={to_show_arr[0]} />
+    // }
 }
 
 export default Result;
