@@ -13,10 +13,7 @@ const Header = () => {
         return (
             <ul className="navbar-nav mr-auto">
                 <li className="nav-item active">
-                    <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
-                </li>
-                <li className="nav-item">
-                    <Link to="/test-covid" className="nav-link">Test Yourself</Link>
+                    <Link className="nav-link" to="/">Test Yourself <span className="sr-only">(current)</span></Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/register" className="nav-link">Register</Link>
@@ -32,10 +29,7 @@ const Header = () => {
         return (
             <ul className="navbar-nav mr-auto">
                 <li className="nav-item active">
-                    <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
-                </li>
-                <li className="nav-item">
-                    <Link to="/test-covid" className="nav-link">Test Yourself</Link>
+                    <Link className="nav-link" to="/">Test Yourself <span className="sr-only">(current)</span></Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/result" className="nav-link">Result</Link>

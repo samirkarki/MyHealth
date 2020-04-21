@@ -72,14 +72,26 @@ namespace MyHealth.Web.Services
         }
 
         public IEnumerable<UserScore> SaveQuestionnaire(Questionnaire questionnaire){
-            var user = _userInfoService.Get(questionnaire.UserId);
-            user.Age=questionnaire.Age;
-            user.Gender=questionnaire.Gender;
-            user.ContactNumber = questionnaire.ContactNumber;
-            _userInfoService.Update(user.Id, user);
-
+            if(questionnaire.UserId.ToLower().StartsWith("anonymous-")){
+                var user = new UserInfo();
+                user.UserName=questionnaire.UserId;
+                user.Age=questionnaire.Age;
+                user.Gender=questionnaire.Gender;
+                user.ContactNumber = questionnaire.ContactNumber;
+                _userInfoService.Create(user);
+            }
+            else{
+                var user = _userInfoService.Get(questionnaire.UserId);
+                if(user!=null){
+                    user.Age=questionnaire.Age;
+                    user.Gender=questionnaire.Gender;
+                    user.ContactNumber = questionnaire.ContactNumber;
+                    _userInfoService.Update(user.Id, user);
+                }
+            }
             _userSymptomService.CreateMany(questionnaire.UserSymptoms);
             var userScores = new List<UserScore>();
+            bool hasSomeDisease = false;
             foreach(var disease in GetActiveDiseases()){
                 var userScore = new UserScore();
                 userScore.DiseaseId = disease.Id;
@@ -101,11 +113,17 @@ namespace MyHealth.Web.Services
                 }
                 if(userScore.TotalSymptomCount>0)
                     userScore.TotalScore = userScore.TotalScore/userScore.TotalSymptomCount;
-                if(userScore.MajorSymptomCount>0)
+                if(userScore.MajorSymptomCount>0){
                     userScore.MajorScore = userScore.MajorScore/userScore.MajorSymptomCount;
+                    if(!hasSomeDisease)
+                        hasSomeDisease = (userScore.MajorScore >= 0.5M);
+                }
                 userScore.CreatedDate = DateTime.Today;
                 userScores.Add(userScore);
                 _userScoreService.Remove(us=>us.UserId==userScore.UserId && us.DiseaseId==userScore.DiseaseId);
+            }
+            if(!hasSomeDisease){
+                userScores.Add(new UserScore{UserId=questionnaire.UserId, DiseaseId="None", DiseaseName="No Disease suspected", SafetyMeasures="", TotalScore=1, MajorScore=1, TotalSymptomCount=1, MajorSymptomCount=1});
             }
             userScores = userScores.OrderByDescending(n => n.MajorScore).Select((n, i) => {n.Rank=i+1;return n;}).ToList();
             _userScoreService.CreateMany(userScores);

@@ -8,7 +8,6 @@ import { loadUserResult } from './store/actions/questionActions';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import Header from './components/header/Header';
-import Home from './pages/home/Home';
 import Register from './pages/account/Register';
 import Login from './pages/account/Login';
 import PrivateRoutes from './components/common/PrivateRoute';
@@ -37,13 +36,12 @@ const App = () => {
                     <div className="container">
                         <div className="row">
                             <Switch>
-                                <Route exact path="/" component={Home} />
+                                <Route exact path="/" component={CovidTest} />
+                                <Route exact path="/result" component={Result} />
                                 <Route exact path="/register" component={Register} />
                                 <Route exact path="/login" component={Login} />
                                 <AdminRoutes exact path="/admin/reports" component={Reports} />
-                                <PrivateRoutes exact path="/result" component={Result} />
                                 <PrivateRoutes exact path="/user-profile" component={Profile} />
-                                <PrivateRoutes exact path="/test-covid" component={CovidTest} />
                                 <AdminRoutes exact path="/admin/management" component={AdminManagement} />
                                 <AdminRoutes exact path="/admin/dashboard" component={Dashboard} />
                                 <AdminRoutes exact path="/admin/diseases" component={Diseases} />

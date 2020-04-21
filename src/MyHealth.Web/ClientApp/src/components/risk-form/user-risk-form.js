@@ -64,7 +64,8 @@ class UserRiskForm extends Component {
             questionaaire: [],
             age: 0,
             gender: '',
-            contact_num: ''
+            contact_num: '',
+            userId:'',
         }
     }
 
@@ -72,7 +73,10 @@ class UserRiskForm extends Component {
 
         const config = tokenConfig();
         const user = getUserIdFromToken();
-
+        user.userId = user.userId??'anonymous-'+new Date().getTime();
+        this.setState({
+            userId: user.userId
+        });
         axios.get(`/api/questionnaire/${user.userId}`, config)
             .then(res => {
 
@@ -141,7 +145,7 @@ class UserRiskForm extends Component {
         evt.preventDefault()
 
         const user = getUserIdFromToken();
-        const { age, contact_num, gender } = this.state;
+        const { age, contact_num, gender, userId } = this.state;
         const selected_symptoms = [...this.state.questionaaire]
         const checkedSymptoms = []
         selected_symptoms.forEach(itemdetail => {
@@ -173,7 +177,7 @@ class UserRiskForm extends Component {
             return false
         } else {
             var obj = {
-                userId: user.userId,
+                userId: userId,
                 age: parseInt(age),
                 contactNumber: contact_num,
                 gender: gender,
@@ -191,6 +195,8 @@ class UserRiskForm extends Component {
                 <form className="form" onSubmit={this.saveResponse}>
 
                     <div className="form-group">
+                        
+                    <input name="userId" type="hidden" value=""/>
                         <label className="control-label"><strong>तपाइको उमेर :</strong></label>
                         <input style={{ width: '500px' }} className="form-control" name="age" type="number" placeholder="तपाइको उमेर :" onChange={this.setAge} />
                     </div>

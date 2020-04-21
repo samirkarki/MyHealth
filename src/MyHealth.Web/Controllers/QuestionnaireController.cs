@@ -6,7 +6,6 @@ using MyHealth.Web.Services;
 
 namespace MyHealth.Web.Controllers
 {
-    [Authorize]
     public class QuestionnaireController: MyHealthController
     {
         private readonly QuestionnaireService _questionnaireService;
