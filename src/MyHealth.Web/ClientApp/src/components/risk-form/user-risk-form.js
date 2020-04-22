@@ -66,12 +66,13 @@ class UserRiskForm extends Component {
 
     let userInfo = getUserInfo();
     let contact_num = userInfo.userInfo ? userInfo.userInfo.contactNumber : "";
+    let userId = userInfo.userInfo ? userInfo.userInfo.userId : "";
     this.state = {
       questionaaire: [],
       age: 0,
       gender: "",
       contact_num: contact_num,
-      userId: "",
+      userId: userId,
     };
 
   }
@@ -80,7 +81,7 @@ class UserRiskForm extends Component {
     const config = tokenConfig();
     const user = getUserIdFromToken();
 
-    user.userId = user.userId ?? "anonymous-" + new Date().getTime();
+    user.userId = this.state.userId ;//?? "anonymous-" + new Date().getTime();
 
     this.setState({
       userId: user.userId,

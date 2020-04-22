@@ -1,8 +1,6 @@
-import { GetDataFromStore } from "./storageHelper";
-
+import { GetDataFromStore, SaveDataToStore } from "./storageHelper";
+import shortid from "shortid";
 var jwtDecoder = require("jwt-decode");
-
-
 
 export const decodedToken = () => {
   try {
@@ -68,4 +66,24 @@ export const tokenConfig = (getState) => {
     config.headers["Authorization"] = `Bearer ${token}`;
   }
   return config;
+};
+
+export const getAnonymousUser = () => {
+  let userInfo = GetDataFromStore("user");
+  if (userInfo === null) {
+    let userid = "anonymous-" + shortid.generate().substring(0, 10);
+    userInfo = {
+      contactNumber: "",
+      email: "",
+      firstName: "",
+      isAdmin: false,
+      lastName: "",
+      role: null,
+      userId: userid,
+      userName: "anonymoususer",
+    };
+
+    SaveDataToStore("user", userInfo);
+  }
+  return userInfo;
 };
