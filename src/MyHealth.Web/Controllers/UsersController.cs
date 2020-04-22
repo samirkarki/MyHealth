@@ -77,6 +77,7 @@ namespace MyHealth.Web.Controllers
             userInfo.UserId = user.Id;
             userInfo.IsAdmin = user.IsAdmin;
             userInfo.Token = user.Token;
+            userInfo.ContactNumber = user.ContactNumber;
             return Ok(userInfo);
         }
 

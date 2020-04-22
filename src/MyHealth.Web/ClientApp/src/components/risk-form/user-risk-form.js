@@ -9,7 +9,11 @@ import {
 } from "../../store/actions/questionActions";
 import QuestionComponent from "./../../pages/covid-test/QuestionComponent";
 
-import { tokenConfig, getUserIdFromToken } from "../../utils/tokenUtility";
+import {
+  tokenConfig,
+  getUserIdFromToken,
+  getUserInfo,
+} from "../../utils/tokenUtility";
 import axios from "axios";
 import { notifyError, notifyInfo } from "../../components/toast/toast";
 import { Redirect } from "react-router-dom";
@@ -59,22 +63,29 @@ import Loader from "../loader";
 class UserRiskForm extends Component {
   constructor(props) {
     super(props);
+
+    let userInfo = getUserInfo();
+    let contact_num = userInfo.userInfo ? userInfo.userInfo.contactNumber : "";
     this.state = {
       questionaaire: [],
       age: 0,
       gender: "",
-      contact_num: "",
+      contact_num: contact_num,
       userId: "",
     };
+
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const config = tokenConfig();
     const user = getUserIdFromToken();
+
     user.userId = user.userId ?? "anonymous-" + new Date().getTime();
+
     this.setState({
       userId: user.userId,
     });
+
     axios
       .get(`/api/questionnaire/${user.userId}`, config)
       .then((res) => {
@@ -208,6 +219,7 @@ class UserRiskForm extends Component {
               className="form-control"
               name="contact_number"
               type="text"
+              value={this.state.contact_num}
               placeholder="Phone Number :"
               onChange={this.setContactNumber}
             />
@@ -280,6 +292,7 @@ class UserRiskForm extends Component {
 const mapStateToProps = (state) => {
   return {
     questions_state: state.questionReducer,
+    authReducer: state.authReducer,
   };
 };
 

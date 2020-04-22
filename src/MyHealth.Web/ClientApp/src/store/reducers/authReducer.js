@@ -1,10 +1,11 @@
 import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_START, REGISTER_SUCCESS, REGISTER_FAIL } from '../actions/types';
+import {SaveDataToStore, GetDataFromStore, RemoveDataFromStorage} from '../../utils/storageHelper'
 
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
-    user: null
+    user: GetDataFromStore('user')
 }
 
 export default function (state = initialState, action) {
@@ -27,6 +28,8 @@ export default function (state = initialState, action) {
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS: {
             localStorage.removeItem('token');
+            RemoveDataFromStorage('user');
+
             return {
                 ...state,
                 token: null,
@@ -37,6 +40,7 @@ export default function (state = initialState, action) {
         }
         case LOGIN_SUCCESS: {
             localStorage.setItem('token', action.payload.token);
+            SaveDataToStore('user', action.payload);
             return {
                 ...state,
                 user: action.payload,
