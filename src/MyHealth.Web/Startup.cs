@@ -107,12 +107,6 @@ namespace MyHealth.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions    //For the '.well-known' folder
-            {
-                FileProvider = new PhysicalFileProvider(System.IO.Path.Combine(Directory.GetCurrentDirectory(), ".well-known")),
-                RequestPath = "/Pages/PrivacyPolicy.html",
-                ServeUnknownFileTypes = true,
-            });
 
             app.UseStaticFiles(new StaticFileOptions    //For the '.well-known' folder
             {
