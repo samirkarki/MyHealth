@@ -93,7 +93,7 @@ namespace MyHealth.Web.Services
                     new Claim("UserName", user.UserName),
                     new Claim("FirstName", user.FirstName),
                     new Claim("LastName", user.LastName),
-                    new Claim("ContactNumber", user.ContactNumber),
+                    new Claim("ContactNumber", user.ContactNumber??"N/A"),
                     new Claim("IsAdmin", user.IsAdmin.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),

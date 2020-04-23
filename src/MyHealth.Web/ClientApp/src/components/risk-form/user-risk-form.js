@@ -240,7 +240,7 @@ class UserRiskForm extends Component {
                     value="Male"
                     onChange={this.setGender}
                   >
-                    पुरुस
+                    पुरुष
                   </RadioButton>
                   <RadioButton
                     inline={true}

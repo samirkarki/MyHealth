@@ -12,9 +12,9 @@ const NotTestedYetComponent = ({ ...props }) => {
                 <div className="col-md-12">
                     <div className="card border-secondary">
                         <div className="card-body">
-                            <p>You haven't filled up covid test form. Please test yourself to see the results.</p>
+                            <p>मुल्यांकन फारम भर्न स्वास्थ्य मूल्यांकन मा क्लिक गर्नुहोस | </p>
                             <p>
-                                <Link to="/test-covid">Go to test page</Link>
+                                <Link to="/">स्वास्थ्य मूल्यांकन</Link>
                             </p>
                         </div>
                     </div>
@@ -33,19 +33,23 @@ const ResultViewComponent = ({ dataitem, ...props }) => {
             <div className="row">
                 <div className="col-md-4">
                     <div className="card text-white bg-info mb-3">
-                        <div className="card-header"><h4 className="card-title">Predictions: </h4></div>
+                        <div className="card-header"><h4 className="card-title">सम्भावना</h4></div>
                         <div className="card-body">
-                            <p className="card-text"><h5>Predicted Disease: <span>{dataitem.diseaseName}</span></h5></p>
+                        if(dataitem.diseaseName=="0") {
+                            <p className="card-text"><h5>तपाइले भर्नु भएको फर्मको आधार मा तपाइलाई <span>{dataitem.diseaseName}</span> को सम्भावना देखिन्छ | </h5></p>
+                        }else{
+                            <p className="card-text"><h5>तपाइले भर्नु भएको फर्मको आधार मा तपाइलाई कुन रोगको सम्भावना देखिएन | </h5></p>
+                        }
                         </div>
                     </div>
                 </div>
                 <div className="col-md-8">
                     <div className="card border-secondary">
-                        <div className="card-header">Suggestions</div>
+                        <div className="card-header">सुरक्षा उपायहरू</div>
                         <div className="card-body">
                             <div className="alert alert-dismissible alert-info">
                                 <p className="mb-0">
-                                    Hi! Our coronavirus disease self assessment scan has been developed on the basis of guidelines from the WHO and MoH, Government of Nepal. This interaction should not be taken as expert medical advice. Any information you share with us will be kept strictly confidential.
+                                    नमस्ते! <p>यस स्वास्थ्य मूल्यांकन WHO र MoH, नेपाल सरकारको दिशानिर्देशहरूको आधारमा विकसित गरिएको छ। यो केवल प्रारम्भिक मुल्यांकन मात्र हो र विशेषज्ञको सल्लाहलाइ मात्र अन्तिम निस्कर्ष मान्नुहोला | तपाइको सूचना गोप्य रखिनेछ |</p>
                                 </p>
                             </div>
                             {

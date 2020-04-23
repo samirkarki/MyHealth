@@ -95,7 +95,7 @@ const Register = () => {
                         <label><strong>Gender :</strong></label><br />
                         <label>
                             <div>
-                                <RadioButton inline={true} name="gender" value="Male" checked={Gender === 'Male'} onChange={() => setGender('Male')}>पुरुस</RadioButton>
+                                <RadioButton inline={true} name="gender" value="Male" checked={Gender === 'Male'} onChange={() => setGender('Male')}>पुरुष</RadioButton>
                                 <RadioButton inline={true} name="gender" value="Female" checked={Gender === 'Female'} onChange={() => setGender('Female')}>महिला</RadioButton>
                                 <RadioButton inline={true} name="gender" value="Other" checked={Gender === 'Other'} onChange={() => setGender('Other')}>अन्य</RadioButton>
                             </div>

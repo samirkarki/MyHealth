@@ -133,7 +133,7 @@ namespace MyHealth.Web.Services
             }
             if (!hasSomeDisease)
             {
-                userScores.Add(new UserScore { UserId = questionnaire.UserId, DiseaseId = "None", DiseaseName = "No Disease suspected", SafetyMeasures = "", TotalScore = 1, MajorScore = 1, TotalSymptomCount = 1, MajorSymptomCount = 1 });
+                userScores.Add(new UserScore { UserId = questionnaire.UserId, DiseaseId = "0", DiseaseName = "No Disease suspected", SafetyMeasures = "", TotalScore = 1, MajorScore = 1, TotalSymptomCount = 1, MajorSymptomCount = 1 });
             }
             userScores = userScores.OrderByDescending(n => n.MajorScore).Select((n, i) => { n.Rank = i + 1; return n; }).ToList();
             _userScoreService.CreateMany(userScores);
