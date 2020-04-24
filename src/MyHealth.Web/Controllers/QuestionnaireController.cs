@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyHealth.Web.Models;
 using MyHealth.Web.Services;
@@ -27,7 +28,9 @@ namespace MyHealth.Web.Controllers
         [HttpPost]
         public ActionResult<IEnumerable<UserScore>> Post(Questionnaire questionnaire)
         {
-            var userScores = _questionnaireService.SaveQuestionnaire(questionnaire);
+            HttpRequest _request = HttpContext.Request;
+            string ipAddress = _request.HttpContext.Connection.RemoteIpAddress.ToString();
+            var userScores = _questionnaireService.SaveQuestionnaire(questionnaire, ipAddress);
             return Ok(userScores);
         }
 

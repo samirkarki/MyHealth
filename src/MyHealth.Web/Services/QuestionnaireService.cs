@@ -71,7 +71,7 @@ namespace MyHealth.Web.Services
             return _diseaseService.Query(d => d.Selected);
         }
 
-        public IEnumerable<UserScore> SaveQuestionnaire(Questionnaire questionnaire)
+        public IEnumerable<UserScore> SaveQuestionnaire(Questionnaire questionnaire, string ipAddress)
         {
             if (questionnaire.UserId.ToLower().StartsWith("anonymous-"))
             {
@@ -103,6 +103,8 @@ namespace MyHealth.Web.Services
                 userScore.DiseaseName = disease.Name;
                 userScore.SafetyMeasures = disease.SafetyMeasures;
                 userScore.UserId = questionnaire.UserId;
+                userScore.IpAddress = ipAddress;
+
                 var diseaseSymptoms = _diseaseSymptomService.Query(ds => ds.DiseaseId == disease.Id);
                 foreach (var diseaseSymptom in diseaseSymptoms)
                 {

@@ -14,5 +14,6 @@ namespace MyHealth.Web.Models
         public string SafetyMeasures { get; set; }
         public DateTime CreatedDate { get; set; }
         public int Rank { get; set; }
+        public string IpAddress { get; set; }
     }
 }
